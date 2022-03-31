@@ -155,9 +155,9 @@ class Trainer(object):
                 # compute loss
                 loss = self.criteria(input_sample=input_img, prediction=pred_label, target=target_label)
 
-                if isinstance(loss, torch.Tensor) and torch.isnan(loss):
-                    import pdb
-                    pdb.set_trace()
+                # if isinstance(loss, torch.Tensor) and torch.isnan(loss):
+                #     import pdb
+                #     pdb.set_trace()
 
             # perform the backward pass with gradient accumulation [Optional]
             self.gradient_scalar.scale(loss).backward()

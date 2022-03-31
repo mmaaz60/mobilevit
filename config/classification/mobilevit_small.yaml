@@ -4,13 +4,13 @@ common:
   auto_resume: true
   mixed_precision: true
 dataset:
-  root_train: "/mnt/imagenet/training"
-  root_val: "/mnt/imagenet/validation"
+  root_train: "/l/users/muhammad.maaz/data/tiny_imagenet"
+  root_val: "/l/users/muhammad.maaz/data/tiny_imagenet"
   name: "imagenet"
   category: "classification"
-  train_batch_size0: 128
-  val_batch_size0: 100
-  eval_batch_size0: 100
+  train_batch_size0: 2
+  val_batch_size0: 1
+  eval_batch_size0: 1
   workers: 4
   persistent_workers: false
   pin_memory: true

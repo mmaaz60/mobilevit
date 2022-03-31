@@ -118,7 +118,7 @@ def main(opts, **kwargs):
         model_fps = deepcopy(model)
         model_fps.eval()
         inference_times = []
-        for i in range(505):
+        for i in range(5005):
             start = time.time()
             _ = model_fps(batch)
             end = time.time()

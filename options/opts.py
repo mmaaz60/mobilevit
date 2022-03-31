@@ -38,6 +38,10 @@ def arguments_common(parser: argparse.ArgumentParser) -> argparse.ArgumentParser
     group.add_argument('--common.auto-resume', action="store_true", help='Resume training from the last checkpoint')
     group.add_argument('--common.grad-clip', type=float, default=None, help="Gradient clipping value")
     group.add_argument('--common.k-best-checkpoints', type=int, default=5, help="Keep k-best checkpoints")
+
+    # Only calculate the stats
+    group.add_argument('--common.stats_only', type=bool, default=False, help="Either to only calculate the stats.")
+
     return parser
 
 

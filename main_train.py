@@ -19,6 +19,10 @@ from engine import Trainer
 import math
 from torch.cuda.amp import GradScaler
 from common import DEFAULT_EPOCHS, DEFAULT_ITERATIONS, DEFAULT_MAX_ITERATIONS, DEFAULT_MAX_EPOCHS
+from ptflops import get_model_complexity_info
+from copy import deepcopy
+from fvcore.nn import FlopCountAnalysis
+import time
 
 
 def main(opts, **kwargs):
@@ -70,6 +74,58 @@ def main(opts, **kwargs):
         model = model.to(device=device)
         if is_master_node:
             logger.log('Using DataParallel for training')
+    # Stats only
+    stats_only = getattr(opts, "common.stats_only", 0)
+    if stats_only:
+        width = getattr(opts, "sampler.vbs.crop_size_width", 256)
+        height = getattr(opts, "sampler.vbs.crop_size_height", 256)
+        # Calculate Model FLOPS
+        macs, params = get_model_complexity_info(model, (3, width, height), as_strings=True,
+                                                 print_per_layer_stat=True, verbose=True)
+        print(f"Params & Flops using ptflops:")
+        print('{:<30}  {:<8}'.format('Computational complexity: ', macs))
+        print('{:<30}  {:<8}'.format('Number of parameters: ', params))
+
+        # Print layer wise params
+        from prettytable import PrettyTable
+
+        def count_parameters(model):
+            table = PrettyTable(["Modules", "Parameters"])
+            total_params = 0
+            for name, parameter in model.named_parameters():
+                if not parameter.requires_grad: continue
+                params = parameter.numel()
+                table.add_row([name, params])
+                total_params += params
+            print(table)
+            return total_params
+
+        total_params = count_parameters(model)
+
+        # fvcore
+        input_res = (3, width, height)
+        input = torch.ones(()).new_empty((1, *input_res), dtype=next(model.parameters()).dtype,
+                                         device=next(model.parameters()).device)
+        flops = FlopCountAnalysis(model, input)
+        model_flops = flops.total()
+        print(f"Total Trainable Params: {round(total_params * 1e-6, 2)} M")
+        print(f"Flops using fvcore: {round(model_flops * 1e-6, 2)} M")
+
+        # Measure the FPS
+        input_res = (3, width, height)
+        batch = torch.ones(()).new_empty((1, *input_res),
+                                         dtype=next(model.parameters()).dtype, device=next(model.parameters()).device)
+        model_fps = deepcopy(model)
+        model_fps.eval()
+        inference_times = []
+        for i in range(505):
+            start = time.time()
+            _ = model_fps(batch)
+            end = time.time()
+            inference_times.append(end - start)
+        print(f"FPS: {round(1 / (sum(inference_times[5:]) / len(inference_times[5:])), 2)}")
+
+        return 0
 
     # setup criteria
     criteria = build_loss_fn(opts)

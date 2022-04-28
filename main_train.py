@@ -111,6 +111,20 @@ def main(opts, **kwargs):
         print(f"Total Trainable Params: {round(total_params * 1e-6, 2)} M")
         print(f"Flops using fvcore: {round(model_flops * 1e-6, 2)} M")
 
+        # Using Model summary
+        from model_summary import get_model_activation, get_model_flops
+        input_dim = (3, 256, 256)  # set the input dimension
+
+        activations, num_conv2d = get_model_activation(model, input_dim)
+        print('{:>16s} : {:<.4f} [M]'.format('#Activations', activations / 10 ** 6))
+        print('{:>16s} : {:<d}'.format('#Conv2d', num_conv2d))
+
+        flops = get_model_flops(model, input_dim, False)
+        print('{:>16s} : {:<.4f} [G]'.format('FLOPs', flops / 10 ** 9))
+
+        num_parameters = sum(map(lambda x: x.numel(), model.parameters()))
+        print('{:>16s} : {:<.4f} [M]'.format('#Params', num_parameters / 10 ** 6))
+
         # Measure the FPS
         input_res = (3, width, height)
         batch = torch.ones(()).new_empty((1, *input_res),

@@ -118,12 +118,37 @@ def main(opts, **kwargs):
         model_fps = deepcopy(model)
         model_fps.eval()
         inference_times = []
-        for i in range(5005):
-            start = time.time()
-            _ = model_fps(batch)
+        with torch.no_grad():
+            # A few times pass the inputs to the network - warm-up
+            for i in range(10):
+                preds = model(batch)
+            for i in range(1000):
+                start = time.time()
+                _ = model_fps(batch)
+                end = time.time()
+                inference_times.append(end - start)
+            print(f"FPS @ BS=1: {round(1 / (sum(inference_times) / len(inference_times)), 2)}")
+            # Measure the FPS @ BS=256
+            inference_times = []
+            batch_size = 256
+            input_res = (3, width, height)
+            inputs = torch.ones(()).new_empty((batch_size, *input_res),
+                                              dtype=next(model.parameters()).dtype,
+                                              device=next(model.parameters()).device)
+            # A few times pass the inputs to the network - warm-up
+            for i in range(2):
+                preds = model(inputs)
+            # Perform the actual benchmarking following DeiT paper
             end = time.time()
-            inference_times.append(end - start)
-        print(f"FPS: {round(1 / (sum(inference_times[5:]) / len(inference_times[5:])), 2)}")
+            for i in range(30):
+                # Run the model forward pass
+                preds = model(inputs)
+                inference_times.append(time.time() - end)
+                end = time.time()
+        print(f"Total passes to network: {30}")
+        print(f"Batch size: {batch_size}")
+        print(f"Total network time: {sum(inference_times)} sec")
+        print(f"Throughput: {30 * batch_size / sum(inference_times)} FPS")
 
         return 0
 

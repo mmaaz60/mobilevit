@@ -14,7 +14,7 @@ class ConvNeXtBlock(BaseModule):
                  in_channels: int,
                  expan_ratio: int,
                  kernel_size: int,
-                 layer_scale_init_value: Optional[float] = 0.0,
+                 layer_scale_init_value: Optional[float] = 1e-6,
                  dilation: Optional[int] = 1
                  ) -> None:
         act_type = getattr(opts, "model.activation.name", "relu")
@@ -24,7 +24,7 @@ class ConvNeXtBlock(BaseModule):
         super(ConvNeXtBlock, self).__init__()
 
         self.dwconv = ConvLayer(opts=opts, in_channels=in_channels, out_channels=in_channels, kernel_size=kernel_size,
-                                groups=in_channels, stride=1, use_norm=True, use_act=False)
+                                groups=in_channels, stride=1, use_norm=True, use_act=False, dilation=dilation)
         self.pwconv1 = LinearLayer(in_features=in_channels, out_features=expan_ratio * in_channels)
         self.act = get_activation_fn(act_type=act_type, inplace=inplace,
                                      negative_slope=neg_slope, num_parameters=expan_ratio * in_channels)

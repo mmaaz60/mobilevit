@@ -54,16 +54,8 @@ scheduler:
     min_lr: 0.0002
 model:
   classification:
-    name: "mobilevit"
+    name: "convnext"
     classifier_dropout: 0.1
-    mit:
-      mode: "small"
-      ffn_dropout: 0.0
-      attn_dropout: 0.0
-      dropout: 0.1
-      number_heads: 4
-      no_fuse_local_global_features: false
-      conv_kernel_size: 3
     activation:
       name: "swish"
   normalization:

@@ -33,6 +33,9 @@ class ConvNeXtBlock(BaseModule):
                                   requires_grad=True) if layer_scale_init_value > 0 else None
 
         self.in_channels = in_channels
+        self.expan_ratio = expan_ratio
+        self.kernel_size = kernel_size
+        self.layer_scale_init_value = layer_scale_init_value
         self.dilation = dilation
 
     def forward(self, x: Tensor) -> Tensor:
@@ -46,8 +49,7 @@ class ConvNeXtBlock(BaseModule):
             x = self.gamma * x
         x = x.permute(0, 3, 1, 2)  # (N, H, W, C) -> (N, C, H, W)
 
-        x = input + self.drop_path(x)
-
+        x = input + x
         return x
 
     def profile_module(self, input: Tensor) -> (Tensor, float, float):

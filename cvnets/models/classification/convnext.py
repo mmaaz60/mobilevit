@@ -1,10 +1,9 @@
 from torch import nn
-import argparse
 from typing import Tuple, Dict
 
 from . import register_cls_models
 from .base_cls import BaseEncoder
-from .config.resnet import get_configuration
+from .config.convnext import get_configuration
 from ...layers import ConvLayer, LinearLayer, GlobalPool, Identity, Dropout
 from ...modules import ConvNeXtBlock
 
@@ -120,7 +119,7 @@ class ConvNext(BaseEncoder):
         layer_name = kwargs["layer_name"]
 
         stage = nn.Sequential()
-        for block_idx in range(1, num_blocks):
+        for block_idx in range(1, num_blocks + 1):
             stage.add_module(
                 name="block_{}".format(block_idx),
                 module=ConvNeXtBlock(opts=opts, in_channels=in_channels, expan_ratio=expan_ratio,

@@ -23,6 +23,7 @@ from .normalization_layers import AdjustBatchNormMomentum
 from .adaptive_pool import AdaptiveAvgPool2d
 from .flatten import Flatten
 from .multi_head_attention import MultiHeadAttention
+from .cross_covariance_attention import XCA
 from .dropout import Dropout, Dropout2d
 
 __all__ = [

@@ -8,6 +8,7 @@ from .squeeze_excitation import SqueezeExcitation
 from .mobilenetv2 import InvertedResidual, InvertedResidualSE
 from .resnet import BasicResNetBlock, BottleneckResNetBlock
 from .convnext import ConvNeXtBlock
+from .condDTA import ConvDTABlock
 from .aspp_block import ASPP
 from .transformer import TransformerEncoder
 from .ppm import PPM

@@ -11,7 +11,7 @@ dataset:
 #  train_batch_size0: 128
   val_batch_size0: 256
   eval_batch_size0: 256
-  workers: 4
+#  workers: 4
   persistent_workers: false
   pin_memory: true
 image_augmentation:

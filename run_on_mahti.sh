@@ -16,7 +16,7 @@ srun --ntasks=2 --ntasks-per-node=1 \
 srun --ntasks=2 --ntasks-per-node=1 \
     tar xf /scratch/project_2001284/anwer/mvit_pretraining/data/val.tar.gz -C "$LOCAL_SCRATCH" --overwrite
 
-PYTHONWARNINGS="ignore::Warning" timeout 35.5h srun python main_train.py --common.config-file config/classification/convnext.yaml --common.results-loc results/convnext --dataset.root_train "$LOCAL_SCRATCH/train" --dataset.root_val "$LOCAL_SCRATCH/val" --dataset.workers 10
+PYTHONWARNINGS="ignore::Warning" timeout 35.5h srun python main_train.py --common.config-file config/classification/convnext.yaml --common.results-loc results/convnext --dataset.root-train "$LOCAL_SCRATCH/train" --dataset.root-val "$LOCAL_SCRATCH/val" --dataset.workers 10
 if [[ $? -eq 124 ]]; then
   sbatch ./run_on_mahti.sh
 fi

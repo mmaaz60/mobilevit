@@ -54,11 +54,15 @@ class ConvNeXtBlock(BaseModule):
 
     def profile_module(self, input: Tensor) -> (Tensor, float, float):
         out, n_params_dwconv, n_macs_dwconv = module_profile(module=self.dwconv, x=input)
-        out, n_params_pwconv1, n_macs_pwconv1 = module_profile(module=self.dwconv, x=out.permute(0, 2, 3, 1))
-        out, n_params_pwconv2, n_macs_pwconv2 = module_profile(module=self.dwconv, x=out)
+        out, n_params_pwconv1, n_macs_pwconv1 = module_profile(module=self.pwconv1, x=out.permute(0, 2, 3, 1))
+        n_macs_pwconv1 = n_params_pwconv1 * out.shape[0] * out.shape[1] * out.shape[2]
+        out, n_params_pwconv2, n_macs_pwconv2 = module_profile(module=self.pwconv2, x=out)
+        n_macs_pwconv2 = n_params_pwconv2 * out.shape[0] * out.shape[1] * out.shape[2]
+        n_params_gamma = sum([p.numel() for p in self.gamma])
+        n_macs_gamma = n_params_gamma * out.shape[0]
 
-        return out.permute(0, 3, 1, 2), n_params_dwconv + n_params_pwconv1 + n_params_pwconv2, \
-               n_macs_dwconv + n_macs_pwconv1 + n_macs_pwconv2
+        return out.permute(0, 3, 1, 2), n_params_dwconv + n_params_pwconv1 + n_params_pwconv2 + n_params_gamma, \
+               n_macs_dwconv + n_macs_pwconv1 + n_macs_pwconv2 + n_macs_gamma
 
     def __repr__(self) -> str:
         return '{}(in_channels={}, expan_ratio={}, kernel_size={}, layer_scale_init_value={}, dilation={})'.format(

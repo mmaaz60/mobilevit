@@ -3,8 +3,8 @@
 #SBATCH --partition=multigpu
 #SBATCH --time=168:00:00
 #SBATCH --nodes=1
-#SBATCH --ntasks=16
-#SBATCH --cpus-per-task=6
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=96
 #SBATCH --gres=gpu:16
 ##SBATCH --gpus=16
 

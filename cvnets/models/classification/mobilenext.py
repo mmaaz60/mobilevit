@@ -4,7 +4,7 @@ from typing import Tuple, Dict
 from . import register_cls_models
 from .base_cls import BaseEncoder
 from .config.mobilenext import get_configuration
-from ...layers import ConvLayer, LinearLayer, GlobalPool, Identity, Dropout
+from ...layers import ConvLayer, LinearLayer, GlobalPool, Identity, Dropout, get_normalization_layer
 from ...modules import ConvNeXtBlock, ConvDTABlock
 
 
@@ -134,8 +134,10 @@ class MobileNeXt(BaseEncoder):
                                          kernel_size=kernel_size, dilation=self.dilation)
                 )
         if downsampling:
+            norm = get_normalization_layer(opts=opts, num_features=in_channels)
+            stage.add_module(name=f"downsample_{layer_name}_norm", module=norm)
             stage.add_module(name=f"downsample_{layer_name}",
                              module=ConvLayer(opts=opts, in_channels=in_channels, out_channels=out_channels,
-                                              kernel_size=2, stride=2, use_norm=True, use_act=False))
+                                              kernel_size=2, stride=2, use_norm=False, use_act=False))
 
         return stage, out_channels

@@ -115,12 +115,13 @@ class MobileNeXt(BaseEncoder):
         out_channels = layer_config.get("out_channels")
         kernel_size = layer_config.get("kernel_size", 7)
         expan_ratio = layer_config.get("expan_ratio", 4)
+        ConvDTA = layer_config.get("ConvDTA", False)
         downsampling = kwargs["downsampling"]
         layer_name = kwargs["layer_name"]
 
         stage = nn.Sequential()
         for block_idx in range(1, num_blocks + 1):
-            if block_idx == num_blocks:
+            if ConvDTA and block_idx == num_blocks:
                 stage.add_module(
                     name="block_{}".format(block_idx),
                     module=ConvDTABlock(opts=opts, in_channels=in_channels, expan_ratio=expan_ratio,

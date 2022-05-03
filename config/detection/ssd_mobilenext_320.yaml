@@ -55,19 +55,11 @@ model:
       iou_threshold: 0.5
       nms_iou_threshold: 0.5
   classification:
-    name: "mobilevit"
+    name: "mobilenext"
     classifier_dropout: 0.1
-    mit:
-      mode: "small"
-      ffn_dropout: 0.0
-      attn_dropout: 0.0
-      dropout: 0.1
-      number_heads: 4
-      no_fuse_local_global_features: false
-      conv_kernel_size: 3
     activation:
       name: "swish"
-    pretrained: "https://docs-assets.developer.apple.com/ml-research/models/cvnets/classification/mobilevit_s.pt"
+    pretrained: "classification_weights/mobilenext.pt"
   normalization:
     name: "sync_batch_norm"
     momentum: 0.1

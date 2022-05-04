@@ -52,7 +52,7 @@ class ConvNext(BaseEncoder):
                                                       in_channels=input_channels,
                                                       layer_config=cfg["layer2"],
                                                       layer_name="stage_1",
-                                                      downsampling=True
+                                                      downsampling=False
                                                       )
         self.model_conf_dict['layer2'] = {'in': input_channels, 'out': out_channels}
         input_channels = out_channels
@@ -84,7 +84,7 @@ class ConvNext(BaseEncoder):
                                                       layer_config=cfg["layer5"],
                                                       dilate=dilate_l5,
                                                       layer_name="stage_4",
-                                                      downsampling=False
+                                                      downsampling=True
                                                       )
         self.model_conf_dict['layer5'] = {'in': input_channels, 'out': out_channels}
         input_channels = out_channels
@@ -122,17 +122,17 @@ class ConvNext(BaseEncoder):
         layer_name = kwargs["layer_name"]
 
         stage = nn.Sequential()
-        for block_idx in range(1, num_blocks + 1):
-            stage.add_module(
-                name="block_{}".format(block_idx),
-                module=ConvNeXtBlock(opts=opts, in_channels=in_channels, expan_ratio=expan_ratio,
-                                     kernel_size=kernel_size, dilation=self.dilation)
-            )
         if downsampling:
             norm = get_normalization_layer(opts=opts, num_features=in_channels)
             stage.add_module(name=f"downsample_{layer_name}_norm", module=norm)
             stage.add_module(name=f"downsample_{layer_name}",
                              module=ConvLayer(opts=opts, in_channels=in_channels, out_channels=out_channels,
                                               kernel_size=2, stride=2, use_norm=False, use_act=False))
+        for block_idx in range(1, num_blocks + 1):
+            stage.add_module(
+                name="block_{}".format(block_idx),
+                module=ConvNeXtBlock(opts=opts, in_channels=out_channels, expan_ratio=expan_ratio,
+                                     kernel_size=kernel_size, dilation=self.dilation)
+            )
 
         return stage, out_channels

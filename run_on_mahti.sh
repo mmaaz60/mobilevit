@@ -3,8 +3,8 @@
 #SBATCH --account=project_2000255
 #SBATCH --partition=gpumedium
 #SBATCH --time=36:00:00
-#SBATCH --nodes=2
-#SBATCH --ntasks=8
+#SBATCH --nodes=1
+#SBATCH --ntasks=4
 #SBATCH --cpus-per-task=32
 #SBATCH --gres=gpu:a100:4,nvme:200
 ##SBATCH --mem-per-cpu=8000

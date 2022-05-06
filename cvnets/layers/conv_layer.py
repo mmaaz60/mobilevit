@@ -66,6 +66,8 @@ class ConvLayer(BaseLayer):
         assert isinstance(dilation, (tuple, list))
 
         padding = (int((kernel_size[0] - 1) / 2) * dilation[0], int((kernel_size[1] - 1) / 2) * dilation[1])
+        if kernel_size[0] == 2 and dilation[0] > 1:
+            padding = 1
 
         if in_channels % groups != 0:
             logger.error('Input channels are not divisible by groups. {}%{} != 0 '.format(in_channels, groups))

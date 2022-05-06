@@ -57,7 +57,7 @@ from cvnets.layers.normalization.batch_norm import BatchNorm2d, BatchNorm1d
 from cvnets.layers.normalization.group_norm import GroupNorm
 from cvnets.layers.normalization.instance_norm import InstanceNorm1d, InstanceNorm2d
 from cvnets.layers.normalization.sync_batch_norm import SyncBatchNorm
-from cvnets.layers.normalization.layer_norm import LayerNorm
+from cvnets.layers.normalization.layer_norm import LayerNorm, LayerNormConvNext
 
 
 __all__ = [
@@ -67,5 +67,6 @@ __all__ = [
     'InstanceNorm1d',
     'InstanceNorm2d',
     'SyncBatchNorm',
-    'LayerNorm'
+    'LayerNorm',
+    'LayerNormConvNext',
 ]

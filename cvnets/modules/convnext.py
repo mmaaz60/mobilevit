@@ -63,7 +63,8 @@ class ConvNeXtBlock(BaseModule):
         B, C, H, W = out.shape
         out = out.reshape(B, H, W, C)
         out, n_params_norm, n_macs_norm = module_profile(module=self.norm, x=out)
-        out, n_params_pwconv1, n_macs_pwconv1 = module_profile(module=self.pwconv1, x=out.permute(0, 2, 3, 1))
+
+        out, n_params_pwconv1, n_macs_pwconv1 = module_profile(module=self.pwconv1, x=out)
         n_macs_pwconv1 = n_params_pwconv1 * out.shape[0] * out.shape[1] * out.shape[2]
         out, n_params_pwconv2, n_macs_pwconv2 = module_profile(module=self.pwconv2, x=out)
         n_macs_pwconv2 = n_params_pwconv2 * out.shape[0] * out.shape[1] * out.shape[2]

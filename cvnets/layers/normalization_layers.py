@@ -10,15 +10,17 @@ from utils import logger
 import math
 from .identity import Identity
 from .normalization import (
-    BatchNorm1d, BatchNorm2d, SyncBatchNorm, LayerNorm, InstanceNorm1d, InstanceNorm2d, GroupNorm, SUPPORTED_NORM_FNS
+    BatchNorm1d, BatchNorm2d, SyncBatchNorm, LayerNorm, LayerNormConvNext,
+    InstanceNorm1d, InstanceNorm2d, GroupNorm, SUPPORTED_NORM_FNS
 )
 
 
-norm_layers_tuple = (BatchNorm1d, BatchNorm2d, SyncBatchNorm, LayerNorm, InstanceNorm1d, InstanceNorm2d, GroupNorm)
+norm_layers_tuple = (BatchNorm1d, BatchNorm2d, SyncBatchNorm, LayerNorm, LayerNormConvNext,
+                     InstanceNorm1d, InstanceNorm2d, GroupNorm)
 
 
 def get_normalization_layer(opts, num_features: int, norm_type: Optional[str] = None, num_groups: Optional[int] = None,
-                            **kwargs):
+                            data_format: Optional[str] = None, **kwargs):
     norm_type = getattr(opts, "model.normalization.name", "layer_norm") if norm_type is None else norm_type
     num_groups = getattr(opts, "model.normalization.groups", 1) if num_groups is None else num_groups
     momentum = getattr(opts, "model.normalization.momentum", 0.1)
@@ -40,6 +42,8 @@ def get_normalization_layer(opts, num_features: int, norm_type: Optional[str] = 
         norm_layer = InstanceNorm1d(num_features=num_features, momentum=momentum)
     elif norm_type in ['layer_norm', 'ln']:
         norm_layer = LayerNorm(num_features)
+    elif norm_type in ['layer_norm_convnext', 'ln_convnext']:
+        norm_layer = LayerNormConvNext(num_features, data_format=data_format)
     elif norm_type == 'identity':
         norm_layer = Identity()
     else:

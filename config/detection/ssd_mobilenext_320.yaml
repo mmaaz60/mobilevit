@@ -58,7 +58,7 @@ model:
     name: "mobilenext"
     classifier_dropout: 0.1
     activation:
-      name: "swish"
+      name: "gelu"
 #    pretrained: "/home/maaz/PycharmProjects/ConvNeXt/cvnets/V03_LN_GeLU_No_PE_79-07/V03_LN_GeLU_No_PE_79-07_cvnet.pt"
   normalization:
     name: "sync_batch_norm"

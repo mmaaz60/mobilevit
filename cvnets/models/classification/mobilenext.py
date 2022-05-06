@@ -99,7 +99,7 @@ class MobileNeXt(BaseEncoder):
         self.classifier.add_module(name="global_pool", module=GlobalPool(pool_type=pool_type, keep_dim=False))
         self.classifier.add_module(name="norm",
                                    module=get_normalization_layer(opts=opts, num_features=input_channels,
-                                                                  norm_type="layer_norm"))
+                                                                  norm_type="layer_norm_convnext"))
         if 0.0 < classifier_dropout < 1.0:
             self.classifier.add_module(name="classifier_dropout", module=Dropout(p=classifier_dropout))
         self.classifier.add_module(name="classifier_fc",

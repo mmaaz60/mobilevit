@@ -9,4 +9,4 @@
 
 LOCAL_SCRATCH='/home/muhammad.maaz/mobilevit/dataset'
 
-cvnets-train --common.config-file config/segmentation/deeplabv3_mobilenext.yaml --common.results-loc results_deeplabv3_mobilenext --dataset.root-train "$LOCAL_SCRATCH/pascal_voc/VOCdevkit" --dataset.root-val "$LOCAL_SCRATCH/pascal_voc/VOCdevkit" --dataset.pascal.coco-root-dir "$LOCAL_SCRATCH/pascal_voc/coco_preprocess"
+cvnets-train --common.config-file config/segmentation/deeplabv3_mobilenext.yaml --common.results-loc results_deeplabv3_mobilenext --dataset.root-train "$LOCAL_SCRATCH/pascal_voc/pascal_voc/VOCdevkit" --dataset.root-val "$LOCAL_SCRATCH/pascal_voc/pascal_voc/VOCdevkit" --dataset.pascal.coco-root-dir "$LOCAL_SCRATCH/pascal_voc/coco_preprocess"

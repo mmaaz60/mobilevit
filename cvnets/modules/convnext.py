@@ -2,7 +2,7 @@ import torch
 from torch import nn, Tensor
 from typing import Optional
 
-from ..layers import ConvLayer, get_activation_fn, LinearLayer
+from ..layers import ConvLayer, get_activation_fn, LinearLayer, get_normalization_layer
 from ..modules import BaseModule
 from ..misc.profiler import module_profile
 
@@ -24,7 +24,9 @@ class ConvNeXtBlock(BaseModule):
         super(ConvNeXtBlock, self).__init__()
 
         self.dwconv = ConvLayer(opts=opts, in_channels=in_channels, out_channels=in_channels, kernel_size=kernel_size,
-                                groups=in_channels, stride=1, use_norm=True, use_act=False, dilation=dilation)
+                                groups=in_channels, stride=1, use_norm=False, use_act=False, bias=True,
+                                dilation=dilation)
+        self.norm = get_normalization_layer(opts=opts, num_features=in_channels, norm_type="layer_norm")
         self.pwconv1 = LinearLayer(in_features=in_channels, out_features=expan_ratio * in_channels)
         self.act = get_activation_fn(act_type=act_type, inplace=inplace,
                                      negative_slope=neg_slope, num_parameters=expan_ratio * in_channels)
@@ -42,6 +44,7 @@ class ConvNeXtBlock(BaseModule):
         input = x
         x = self.dwconv(x)  # Normalization layer is the part of dwconv module
         x = x.permute(0, 2, 3, 1)  # (N, C, H, W) -> (N, H, W, C)
+        x = self.norm(x)
         x = self.pwconv1(x)
         x = self.act(x)
         x = self.pwconv2(x)
@@ -53,16 +56,26 @@ class ConvNeXtBlock(BaseModule):
         return x
 
     def profile_module(self, input: Tensor) -> (Tensor, float, float):
+        # DConv
         out, n_params_dwconv, n_macs_dwconv = module_profile(module=self.dwconv, x=input)
+
+        # PWConv
+        B, C, H, W = out.shape
+        out = out.reshape(B, H, W, C)
+        out, n_params_norm, n_macs_norm = module_profile(module=self.norm, x=out)
         out, n_params_pwconv1, n_macs_pwconv1 = module_profile(module=self.pwconv1, x=out.permute(0, 2, 3, 1))
         n_macs_pwconv1 = n_params_pwconv1 * out.shape[0] * out.shape[1] * out.shape[2]
         out, n_params_pwconv2, n_macs_pwconv2 = module_profile(module=self.pwconv2, x=out)
         n_macs_pwconv2 = n_params_pwconv2 * out.shape[0] * out.shape[1] * out.shape[2]
+        n_params_mlp = n_params_norm + n_params_pwconv1 + n_params_pwconv2
+        n_macs_mlp = n_macs_norm + n_macs_pwconv1 + n_macs_pwconv2
+
+        # Gamma
         n_params_gamma = sum([p.numel() for p in self.gamma])
         n_macs_gamma = n_params_gamma * out.shape[0]
 
-        return out.permute(0, 3, 1, 2), n_params_dwconv + n_params_pwconv1 + n_params_pwconv2 + n_params_gamma, \
-               n_macs_dwconv + n_macs_pwconv1 + n_macs_pwconv2 + n_macs_gamma
+        return out.permute(0, 3, 1, 2), n_params_dwconv + n_params_mlp + n_params_gamma, \
+               n_macs_dwconv + n_macs_mlp + n_macs_gamma
 
     def __repr__(self) -> str:
         return '{}(in_channels={}, expan_ratio={}, kernel_size={}, layer_scale_init_value={}, dilation={})'.format(

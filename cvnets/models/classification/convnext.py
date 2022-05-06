@@ -39,7 +39,7 @@ class ConvNext(BaseEncoder):
         kernel_size = layer_config.get("kernel_size", 4)
         stride = layer_config.get("stride", 4)
         self.conv_1 = ConvLayer(opts=opts, in_channels=image_channels, out_channels=stem_channels,
-                                kernel_size=kernel_size, stride=stride, use_norm=True, use_act=False)
+                                kernel_size=kernel_size, stride=stride, bias=True, use_norm=True, use_act=False)
         self.model_conf_dict['conv1'] = {'in': image_channels, 'out': stem_channels}
 
         # layer1 -> Identity (Later can be used to modify the stem)
@@ -123,11 +123,11 @@ class ConvNext(BaseEncoder):
 
         stage = nn.Sequential()
         if downsampling:
-            norm = get_normalization_layer(opts=opts, num_features=in_channels)
+            norm = get_normalization_layer(opts=opts, num_features=in_channels, norm_type="layer_norm")
             stage.add_module(name=f"downsample_{layer_name}_norm", module=norm)
             stage.add_module(name=f"downsample_{layer_name}",
                              module=ConvLayer(opts=opts, in_channels=in_channels, out_channels=out_channels,
-                                              kernel_size=2, stride=2, use_norm=False, use_act=False))
+                                              kernel_size=2, stride=2, bias=True, use_norm=False, use_act=False))
         for block_idx in range(1, num_blocks + 1):
             stage.add_module(
                 name="block_{}".format(block_idx),

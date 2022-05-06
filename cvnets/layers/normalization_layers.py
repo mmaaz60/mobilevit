@@ -19,7 +19,7 @@ norm_layers_tuple = (BatchNorm1d, BatchNorm2d, SyncBatchNorm, LayerNorm, Instanc
 
 def get_normalization_layer(opts, num_features: int, norm_type: Optional[str] = None, num_groups: Optional[int] = None,
                             **kwargs):
-    norm_type = getattr(opts, "model.normalization.name", "batch_norm") if norm_type is None else norm_type
+    norm_type = getattr(opts, "model.normalization.name", "layer_norm") if norm_type is None else norm_type
     num_groups = getattr(opts, "model.normalization.groups", 1) if num_groups is None else num_groups
     momentum = getattr(opts, "model.normalization.momentum", 0.1)
 

@@ -49,8 +49,8 @@ class ConvLayer(BaseLayer):
         """
         super(ConvLayer, self).__init__()
 
-        if use_norm:
-            assert not bias, 'Do not use bias when using normalization layers.'
+        # if use_norm:
+        #     assert not bias, 'Do not use bias when using normalization layers.'
 
         if isinstance(kernel_size, int):
             kernel_size = (kernel_size, kernel_size)

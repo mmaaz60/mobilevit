@@ -130,7 +130,7 @@ class MobileNeXt(BaseEncoder):
             stage.add_module(name=f"downsample_{layer_name}_norm", module=norm)
             stage.add_module(name=f"downsample_{layer_name}",
                              module=ConvLayer(opts=opts, in_channels=in_channels, out_channels=out_channels,
-                                              kernel_size=2, stride=2, use_norm=False, use_act=False))
+                                              kernel_size=2, stride=2, bias=True, use_norm=False, use_act=False))
         for block_idx in range(1, num_blocks + 1):
             if ConvDTA and block_idx == num_blocks:
                 stage.add_module(

@@ -24,13 +24,14 @@ class ConvDTABlock(BaseModule):
         super(ConvDTABlock, self).__init__()
 
         self.dwconv = ConvLayer(opts=opts, in_channels=in_channels, out_channels=in_channels, kernel_size=kernel_size,
-                                groups=in_channels, stride=1, use_norm=False, use_act=False, dilation=dilation)
+                                groups=in_channels, stride=1, use_norm=False, use_act=False, bias=True,
+                                dilation=dilation)
 
-        self.norm_xca = get_normalization_layer(opts=opts, num_features=in_channels, norm_type="layer_norm")
+        self.norm_xca = get_normalization_layer(opts=opts, num_features=in_channels, norm_type="layer_norm_convnext")
         self.gamma_xca = nn.Parameter(layer_scale_init_value * torch.ones(in_channels), requires_grad=True)
         self.xca = XCA(in_channels, num_heads=8, attn_dropout=0.0, bias=True)
 
-        self.norm = get_normalization_layer(opts=opts, num_features=in_channels, norm_type="layer_norm")
+        self.norm = get_normalization_layer(opts=opts, num_features=in_channels, norm_type="layer_norm_convnext")
         self.pwconv1 = LinearLayer(in_features=in_channels, out_features=expan_ratio * in_channels)
         self.act = get_activation_fn(act_type=act_type, inplace=inplace,
                                      negative_slope=neg_slope, num_parameters=expan_ratio * in_channels)

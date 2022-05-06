@@ -57,13 +57,13 @@ model:
     name: "mobilenext"
     classifier_dropout: 0.1
     activation:
-      name: "swish"
+      name: "gelu"
 #    pretrained: "/home/maaz/PycharmProjects/ConvNeXt/cvnets/timm_weights_V03_cvnet.pt"
   normalization:
-    name: "batch_norm_2d"
+    name: "layer_norm_convnext"
     momentum: 0.1
   activation:
-    name: "swish"
+    name: "gelu"
   layer:
     global_pool: "mean"
     conv_init: "kaiming_normal"

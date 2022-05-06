@@ -60,7 +60,7 @@ model:
       name: "gelu"
 #    pretrained: "/home/maaz/PycharmProjects/ConvNeXt/cvnets/timm_weights_V03_cvnet.pt"
   normalization:
-    name: "layer_norm"
+    name: "layer_norm_convnext"
     momentum: 0.1
   activation:
     name: "gelu"

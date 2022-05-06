@@ -6,8 +6,8 @@ common:
   auto_resume: true
   mixed_precision: true
 dataset:
-  root_train: "/mnt/vision_datasets/coco"
-  root_val: "/mnt/vision_datasets/coco"
+#  root_train: "/mnt/vision_datasets/coco"
+#  root_val: "/mnt/vision_datasets/coco"
   name: "coco_ssd"
   category: "detection"
   train_batch_size0: 32
@@ -59,7 +59,7 @@ model:
     classifier_dropout: 0.1
     activation:
       name: "gelu"
-#    pretrained: "/home/maaz/PycharmProjects/ConvNeXt/cvnets/V03_LN_GeLU_No_PE_79-07/V03_LN_GeLU_No_PE_79-07_cvnet.pt"
+    pretrained: "/scratch/project_2001284/anwer/convnext/mobilevit/pretrained_weights/V03_LN_GeLU_No_PE_79-07_cvnet.pt"
   normalization:
     name: "sync_batch_norm"
     momentum: 0.1

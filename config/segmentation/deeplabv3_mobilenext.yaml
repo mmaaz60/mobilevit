@@ -6,8 +6,8 @@ common:
   auto_resume: true
   mixed_precision: true
 dataset:
-  root_train: "/mnt/vision_datasets/pascal_voc/VOCdevkit/"
-  root_val: "/mnt/vision_datasets/pascal_voc/VOCdevkit/"
+#  root_train: "/home/maaz/PycharmProjects/data/mobilevit_segmentation/vision_datasets/pascal_voc/VOCdevkit"
+#  root_val: "/home/maaz/PycharmProjects/data/mobilevit_segmentation/vision_datasets/pascal_voc/VOCdevkit"
   name: "pascal"
   category: "segmentation"
   train_batch_size0: 32
@@ -18,7 +18,7 @@ dataset:
   pin_memory: false
   pascal:
     use_coco_data: true
-    coco_root_dir: "/mnt/vision_datasets/coco_preprocess/"
+#    coco_root_dir: "/home/maaz/PycharmProjects/data/mobilevit_segmentation/vision_datasets/coco_preprocess"
 image_augmentation:
   random_resize:
     enable: true
@@ -71,19 +71,11 @@ model:
       aspp_out_channels: 256
       aspp_rates: [6, 12, 18]
   classification:
-    name: "mobilevit"
+    name: "mobilenext"
     classifier_dropout: 0.1
-    mit:
-      mode: "small"
-      ffn_dropout: 0.0
-      attn_dropout: 0.0
-      dropout: 0.1
-      number_heads: 4
-      no_fuse_local_global_features: false
-      conv_kernel_size: 3
     activation:
-      name: "swish"
-    pretrained: "https://docs-assets.developer.apple.com/ml-research/models/cvnets/classification/mobilevit_s.pt"
+      name: "gelu"
+    pretrained: "/scratch/project_2001284/anwer/convnext/mobilevit/pretrained_weights/V03_LN_GeLU_No_PE_79-07_cvnet.pt"
   normalization:
     name: "sync_batch_norm"
     momentum: 0.1

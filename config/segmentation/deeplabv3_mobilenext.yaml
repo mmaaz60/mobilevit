@@ -10,8 +10,8 @@ dataset:
 #  root_val: "/home/maaz/PycharmProjects/data/mobilevit_segmentation/vision_datasets/pascal_voc/VOCdevkit"
   name: "pascal"
   category: "segmentation"
-  train_batch_size0: 32
-  val_batch_size0: 16
+#  train_batch_size0: 32
+#  val_batch_size0: 16
   eval_batch_size0: 1
   workers: 8
   persistent_workers: false
@@ -75,7 +75,7 @@ model:
     classifier_dropout: 0.1
     activation:
       name: "gelu"
-    pretrained: "/scratch/project_2001284/anwer/convnext/mobilevit/pretrained_weights/V03_LN_GeLU_No_PE_79-07_cvnet.pt"
+    pretrained: "/home/muhammad.maaz/mobilevit/classification_weights/V03_LN_GeLU_No_PE_79-07_cvnet.pt"
   normalization:
     name: "sync_batch_norm"
     momentum: 0.1

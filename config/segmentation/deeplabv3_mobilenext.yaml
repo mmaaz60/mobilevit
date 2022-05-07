@@ -61,7 +61,7 @@ model:
     name: "encoder_decoder"
     lr_multiplier: 10
     seg_head: "deeplabv3"
-    output_stride: 16
+    output_stride: 32
     classifier_dropout: 0.1
     activation:
       name: "relu"

@@ -122,11 +122,11 @@ class MultiHeadAttention(BaseLayer):
         macs += (m * seq_len * b_sz)
 
         # number of operations in QK^T
-        m_qk = (seq_len * in_channels * in_channels) * b_sz
+        m_qk = (seq_len * seq_len * in_channels) * b_sz
         macs += m_qk
 
         # number of operations in computing weighted sum
-        m_wt = (seq_len * in_channels * in_channels) * b_sz
+        m_wt = (seq_len * seq_len * in_channels) * b_sz
         macs += m_wt
 
         out_p, p, m = module_profile(module=self.out_proj, x=input)

@@ -116,7 +116,9 @@ class Conv2DTABlock(BaseModule):
 
         # XCA
         B, C, H, W = out.shape
-        _, n_params_pe, n_macs_pe = module_profile(module=self.pos_embd, x=torch.zeros((B, H, W)))
+        n_params_pe, n_macs_pe = 0.0, 0.0
+        if self.pos_embd:
+            _, n_params_pe, n_macs_pe = module_profile(module=self.pos_embd, x=torch.zeros((B, H, W)))
         out, n_params_norm_xca, n_macs_norm_xca = module_profile(module=self.norm_xca,
                                                                  x=out.reshape(B, C, H * W).permute(0, 2, 1))
         out, n_params_xca, n_macs_xca = module_profile(module=self.xca, x=out)

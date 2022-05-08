@@ -6,12 +6,12 @@ common:
   auto_resume: true
   mixed_precision: true
 dataset:
-  root_train: "/home/maaz/PycharmProjects/data/coco"
-  root_val: "/home/maaz/PycharmProjects/data/coco"
+#  root_train: "/home/maaz/PycharmProjects/data/coco"
+#  root_val: "/home/maaz/PycharmProjects/data/coco"
   name: "coco_ssd"
   category: "detection"
-  train_batch_size0: 1
-  val_batch_size0: 1
+  train_batch_size0: 16
+  val_batch_size0: 8
   eval_batch_size0: 1
   workers: 8
   persistent_workers: false
@@ -29,7 +29,7 @@ loss:
       neg_pos_ratio: 3
 optim:
   name: "adamw"
-  weight_decay: 0.01
+  weight_decay: 0.02
   no_decay_bn_filter_bias: false
   adamw:
     beta1: 0.9
@@ -56,10 +56,10 @@ model:
       nms_iou_threshold: 0.5
   classification:
     name: "mobilenext"
-    classifier_dropout: 0.1
+    classifier_dropout: 0.2
     activation:
       name: "gelu"
-    pretrained: "/home/maaz/PycharmProjects/ConvNeXt/cvnets/V03_LN_GeLU_No_PE_79-07/V03_LN_GeLU_No_PE_79-07_cvnet.pt"
+    pretrained: "v04_dw2_xca_mlp_V01_cvnet.pt"
   normalization:
     name: "sync_batch_norm"
     momentum: 0.1

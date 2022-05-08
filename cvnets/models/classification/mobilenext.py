@@ -5,7 +5,7 @@ from . import register_cls_models
 from .base_cls import BaseEncoder
 from .config.mobilenext import get_configuration
 from ...layers import ConvLayer, LinearLayer, GlobalPool, Identity, Dropout, get_normalization_layer
-from ...modules import ConvNeXtBlock, ConvDTABlock
+from ...modules import ConvNeXtBlock, Conv2DTABlock
 
 
 @register_cls_models("mobilenext")
@@ -119,7 +119,10 @@ class MobileNeXt(BaseEncoder):
         out_channels = layer_config.get("out_channels")
         kernel_size = layer_config.get("kernel_size", 7)
         expan_ratio = layer_config.get("expan_ratio", 4)
-        ConvDTA = layer_config.get("ConvDTA", False)
+        Conv2DTA = layer_config.get("Conv2DTA", False)
+        d2_scales = layer_config.get("d2_scales", 4)
+        num_heads = layer_config.get("num_heads", 8)
+        use_pos_emb = layer_config.get("use_pos_emb", False)
         downsampling = kwargs["downsampling"]
         layer_name = kwargs["layer_name"]
 
@@ -140,11 +143,12 @@ class MobileNeXt(BaseEncoder):
                                               kernel_size=2, stride=downsample_stride, dilation=downsample_dilation,
                                               bias=True, use_norm=False, use_act=False))
         for block_idx in range(1, num_blocks + 1):
-            if ConvDTA and block_idx == num_blocks:
+            if Conv2DTA and block_idx == num_blocks:
                 stage.add_module(
                     name="block_{}".format(block_idx),
-                    module=ConvDTABlock(opts=opts, in_channels=out_channels, expan_ratio=expan_ratio,
-                                        kernel_size=kernel_size, dilation=self.dilation)
+                    module=Conv2DTABlock(opts=opts, in_channels=out_channels, expan_ratio=expan_ratio,
+                                         d2_scales=d2_scales, num_heads=num_heads, use_pos_emb=use_pos_emb,
+                                         dilation=self.dilation)
                 )
             else:
                 stage.add_module(

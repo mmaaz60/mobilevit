@@ -1,19 +1,22 @@
 import torch
 from torch import nn, Tensor
 from typing import Optional
+import math
 
-from ..layers import ConvLayer, get_activation_fn, get_normalization_layer, LinearLayer, XCA
+from ..layers import ConvLayer, get_activation_fn, get_normalization_layer, LinearLayer, XCA, PositionalEncodingFourier
 from ..modules import BaseModule
 from ..misc.profiler import module_profile
 
 
-class ConvDTABlock(BaseModule):
+class Conv2DTABlock(BaseModule):
     expansion: int = 4
 
     def __init__(self, opts,
                  in_channels: int,
                  expan_ratio: int,
-                 kernel_size: int,
+                 d2_scales: int,
+                 num_heads: int,
+                 use_pos_emb: bool,
                  layer_scale_init_value: Optional[float] = 1e-6,
                  dilation: Optional[int] = 1
                  ) -> None:
@@ -21,15 +24,26 @@ class ConvDTABlock(BaseModule):
         neg_slope = getattr(opts, "model.activation.neg_slope", 0.1)
         inplace = getattr(opts, "model.activation.inplace", False)
 
-        super(ConvDTABlock, self).__init__()
+        super(Conv2DTABlock, self).__init__()
 
-        self.dwconv = ConvLayer(opts=opts, in_channels=in_channels, out_channels=in_channels, kernel_size=kernel_size,
-                                groups=in_channels, stride=1, use_norm=False, use_act=False, bias=True,
-                                dilation=dilation)
+        width = max(int(math.ceil(in_channels / d2_scales)), int(math.floor(in_channels // d2_scales)))
+        self.width = width
+        if d2_scales == 1:
+            self.nums = 1
+        else:
+            self.nums = d2_scales - 1
+        convs = []
+        for i in range(self.nums):
+            convs.append(ConvLayer(opts=opts, in_channels=width, out_channels=width, kernel_size=3, groups=width,
+                                   use_norm=False, use_act=False, bias=True))
+        self.convs = nn.ModuleList(convs)
 
+        self.pos_embd = None
+        if use_pos_emb:
+            self.pos_embd = PositionalEncodingFourier(dim=in_channels)
         self.norm_xca = get_normalization_layer(opts=opts, num_features=in_channels, norm_type="layer_norm_convnext")
         self.gamma_xca = nn.Parameter(layer_scale_init_value * torch.ones(in_channels), requires_grad=True)
-        self.xca = XCA(in_channels, num_heads=8, attn_dropout=0.0, bias=True)
+        self.xca = XCA(in_channels, num_heads=num_heads, attn_dropout=0.0, bias=True)
 
         self.norm = get_normalization_layer(opts=opts, num_features=in_channels, norm_type="layer_norm_convnext")
         self.pwconv1 = LinearLayer(in_features=in_channels, out_features=expan_ratio * in_channels)
@@ -41,16 +55,33 @@ class ConvDTABlock(BaseModule):
 
         self.in_channels = in_channels
         self.expan_ratio = expan_ratio
-        self.kernel_size = kernel_size
+        self.d2_scales = d2_scales
+        self.num_heads = num_heads
+        self.use_pe = use_pos_emb
         self.layer_scale_init_value = layer_scale_init_value
         self.dilation = dilation
 
     def forward(self, x: Tensor) -> Tensor:
         input = x
-        x = self.dwconv(x)
+
+        spx = torch.split(x, self.width, 1)
+        for i in range(self.nums):
+            if i == 0:
+                sp = spx[i]
+            else:
+                sp = sp + spx[i]
+            sp = self.convs[i](sp)
+            if i == 0:
+                out = sp
+            else:
+                out = torch.cat((out, sp), 1)
+        x = torch.cat((out, spx[self.nums]), 1)
 
         B, C, H, W = x.shape
         x = x.reshape(B, C, H * W).permute(0, 2, 1)
+        if self.pos_embd:
+            pos_encoding = self.pos_embd(B, H, W).reshape(B, -1, x.shape[1]).permute(0, 2, 1)
+            x = x + pos_encoding
         x = x + self.gamma_xca * self.xca(self.norm_xca(x))
 
         x = x.reshape(B, H, W, C)
@@ -66,16 +97,31 @@ class ConvDTABlock(BaseModule):
         return x
 
     def profile_module(self, input: Tensor) -> (Tensor, float, float):
-        # DWConv
-        out, n_params_dwconv, n_macs_dwconv = module_profile(module=self.dwconv, x=input)
+
+        conv_params, conv_macs = 0.0, 0.0
+        spx = torch.split(input, self.width, 1)
+        for i in range(self.nums):
+            if i == 0:
+                sp = spx[i]
+            else:
+                sp = sp + spx[i]
+            sp, params, macs = module_profile(module=self.convs[i], x=sp)
+            conv_params += params
+            conv_macs += macs
+            if i == 0:
+                out = sp
+            else:
+                out = torch.cat((out, sp), 1)
+        out = torch.cat((out, spx[self.nums]), 1)
 
         # XCA
         B, C, H, W = out.shape
+        _, n_params_pe, n_macs_pe = module_profile(module=self.pos_embd, x=torch.zeros((B, H, W)))
         out, n_params_norm_xca, n_macs_norm_xca = module_profile(module=self.norm_xca,
                                                                  x=out.reshape(B, C, H * W).permute(0, 2, 1))
         out, n_params_xca, n_macs_xca = module_profile(module=self.xca, x=out)
-        n_params_xca += n_params_norm_xca
-        n_macs_xca += n_macs_norm_xca
+        n_params_xca += (n_params_pe + n_params_norm_xca)
+        n_macs_xca += (n_macs_pe + n_macs_norm_xca)
 
         # PWConv
         out = out.reshape(B, H, W, C)
@@ -91,15 +137,18 @@ class ConvDTABlock(BaseModule):
         n_params_gamma = 2 * sum([p.numel() for p in self.gamma])
         n_macs_gamma = 2 * n_params_gamma * out.shape[0]
 
-        return out.permute(0, 3, 1, 2), n_params_dwconv + n_params_xca + n_params_mlp + n_params_gamma, \
-               n_macs_dwconv + n_macs_xca + n_macs_mlp + n_macs_gamma
+        return out.permute(0, 3, 1, 2), conv_params + n_params_xca + n_params_mlp + n_params_gamma, \
+            conv_macs + n_macs_xca + n_macs_mlp + n_macs_gamma
 
     def __repr__(self) -> str:
-        return '{}(in_channels={}, expan_ratio={}, kernel_size={}, layer_scale_init_value={}, dilation={})'.format(
-            self.__class__.__name__,
-            self.in_channels,
-            self.expan_ratio,
-            self.kernel_size,
-            self.layer_scale_init_value,
-            self.dilation
-        )
+        return '{}(in_channels={}, expan_ratio={}, d2_scales={}, num_heads={}, ' \
+               'use_pe={}, layer_scale_init_value={}, dilation={})'.format(
+                self.__class__.__name__,
+                self.in_channels,
+                self.expan_ratio,
+                self.d2_scales,
+                self.num_heads,
+                self.use_pe,
+                self.layer_scale_init_value,
+                self.dilation
+                )

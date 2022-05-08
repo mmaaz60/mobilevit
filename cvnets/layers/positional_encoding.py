@@ -81,7 +81,7 @@ class PositionalEncodingFourier(BaseLayer):
 
     def profile_module(self, input: Tensor) -> (Tensor, float, float):
         params = sum([p.numel() for p in self.token_projection.parameters()])
-        macs = params * input[0] * input[1] * input[2]  # input -> (B, H, W)
+        macs = params * input.shape[0] * input.shape[1] * input.shape[2]  # input -> torch.zeros((B, H, W))
         return input, params, macs
 
     def __repr__(self):

@@ -18,7 +18,7 @@ from .normalization_layers import get_normalization_layer, norm_layers_tuple
 from .pixel_shuffle import PixelShuffle
 from .upsample import UpSample
 from .pooling import MaxPool2d, AvgPool2d
-from .positional_encoding import PositionalEncoding
+from .positional_encoding import PositionalEncoding, PositionalEncodingFourier
 from .normalization_layers import AdjustBatchNormMomentum
 from .adaptive_pool import AdaptiveAvgPool2d
 from .flatten import Flatten
@@ -42,6 +42,7 @@ __all__ = [
     'Dropout',
     'Dropout2d',
     'PositionalEncoding',
+    'PositionalEncodingFourier',
     'AdjustBatchNormMomentum',
     'Flatten',
     'MultiHeadAttention'

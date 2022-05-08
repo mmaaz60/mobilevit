@@ -72,10 +72,10 @@ model:
       aspp_rates: [6, 12, 18]
   classification:
     name: "mobilenext"
-    classifier_dropout: 0.1
+    classifier_dropout: 0.4
     activation:
       name: "gelu"
-    pretrained: "/home/muhammad.maaz/mobilevit/classification_weights/v04_dw2_xca_mlp_V01_cvnet.pt"
+    pretrained: "/home/muhammad.maaz/v04_dw2_xca_mlp_V01/mobilevit/classification_weights/v04_dw2_xca_mlp_V01_cvnet.pt"
   normalization:
     name: "sync_batch_norm"
     momentum: 0.1

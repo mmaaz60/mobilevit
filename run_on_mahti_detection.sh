@@ -13,7 +13,7 @@
 srun --ntasks=1 --ntasks-per-node=1 \
     tar xf /scratch/project_2001284/anwer/convnext/mobilevit/dataset/coco/coco.tar.gz -C "$LOCAL_SCRATCH" --overwrite
 
-timeout 35.5h cvnets-train --common.config-file config/detection/ssd_mobilenext_320.yaml --common.results-loc results_coco_mobilenext --dataset.root-train "$LOCAL_SCRATCH" --dataset.root-val "$LOCAL_SCRATCH"
+timeout 35.5h python main_train.py --common.config-file config/detection/ssd_mobilenext_320.yaml --common.results-loc results_coco_mobilenext --dataset.root-train "$LOCAL_SCRATCH" --dataset.root-val "$LOCAL_SCRATCH"
 if [[ $? -eq 124 ]]; then
   sbatch ./run_on_mahti.sh
 fi

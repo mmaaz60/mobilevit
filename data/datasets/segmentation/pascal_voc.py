@@ -98,7 +98,8 @@ class PascalVOCDataset(BaseImageDataset):
                 tf.RandomResize(opts=self.opts),
                 tf.RandomCrop(opts=self.opts, size=size),
                 tf.RandomHorizontalFlip(opts=self.opts),
-                tf.NumpyToTensor(opts=self.opts)
+                tf.NumpyToTensor(opts=self.opts),
+                tf.Normalize(opts=self.opts, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
             ]
 
         return tf.Compose(opts=self.opts, img_transforms=aug_list)
@@ -106,7 +107,8 @@ class PascalVOCDataset(BaseImageDataset):
     def validation_transforms(self, size: tuple, *args, **kwargs):
         aug_list = [
             tf.Resize(opts=self.opts, size=size),
-            tf.NumpyToTensor(opts=self.opts)
+            tf.NumpyToTensor(opts=self.opts),
+            tf.Normalize(opts=self.opts, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ]
         return tf.Compose(opts=self.opts, img_transforms=aug_list)
 

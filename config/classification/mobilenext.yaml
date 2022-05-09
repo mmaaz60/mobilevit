@@ -17,7 +17,7 @@ dataset:
 image_augmentation:
   random_resized_crop:
     enable: true
-    interpolation: "bicubic"
+    interpolation: "bilinear"
   random_horizontal_flip:
     enable: true
 sampler:

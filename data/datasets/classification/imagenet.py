@@ -49,6 +49,7 @@ class ImagenetDataset(BaseImageDataset, ImageFolder):
         aug_list = [tf.RandomResizedCrop(opts=self.opts, size=size)]
         aug_list.extend(self.additional_transforms(opts=self.opts))
         aug_list.append(tf.NumpyToTensor(opts=self.opts))
+        aug_list.append(tf.Normalize(opts=self.opts, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]))
         return tf.Compose(opts=self.opts, img_transforms=aug_list)
 
     def validation_transforms(self, size: tuple):
@@ -68,7 +69,8 @@ class ImagenetDataset(BaseImageDataset, ImageFolder):
         return tf.Compose(opts=self.opts, img_transforms=[
             tf.Resize(opts=self.opts, size=scale_size),
             tf.CenterCrop(opts=self.opts, size=size),
-            tf.NumpyToTensor(opts=self.opts)
+            tf.NumpyToTensor(opts=self.opts),
+            tf.Normalize(opts=self.opts, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
 
     def evaluation_transforms(self, size: tuple):

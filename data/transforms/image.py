@@ -11,6 +11,7 @@ import random
 import torch
 import math
 import argparse
+import torchvision.transforms.functional as F
 
 from typing import Sequence, Dict, Any, Union, Tuple
 
@@ -19,7 +20,6 @@ from . import register_transformations, BaseTransformation
 """
     Different image transformation functions are defined in this file. We use OpenCV and not PIL Image
 """
-
 
 _str_to_cv2_interpolation = {
     'nearest': cv2.INTER_NEAREST,
@@ -202,13 +202,14 @@ class RandomZoomOut(BaseTransformation):
     def add_arguments(cls, parser: argparse.ArgumentParser):
         group = parser.add_argument_group(title="".format(cls.__name__), description="".format(cls.__name__))
         group.add_argument("--image-augmentation.random-zoom-out.enable", action="store_true", help="Use random scale")
-        group.add_argument("--image-augmentation.random-zoom-out.side-range", type=list or tuple, default=[1, 4], 
+        group.add_argument("--image-augmentation.random-zoom-out.side-range", type=list or tuple, default=[1, 4],
                            help="Side range")
         group.add_argument("--image-augmentation.random-zoom-out.p", type=float, default=0.5,
                            help="Probability of applying RandomZoomOut transformation")
         return parser
 
-    def zoom_out(self, image: np.ndarray, boxes: Optional[np.ndarray] = None) -> Tuple[np.ndarray, Optional[np.ndarray]]:
+    def zoom_out(self, image: np.ndarray, boxes: Optional[np.ndarray] = None) -> Tuple[
+        np.ndarray, Optional[np.ndarray]]:
         height, width, depth = image.shape
         ratio = random.uniform(self.side_range[0], self.side_range[1])
         left = int(random.uniform(0, width * ratio - width))
@@ -303,6 +304,7 @@ class RandomResizedCrop(BaseTransformation):
     '''
         Adapted from Pytorch Torchvision
     '''
+
     def __init__(self, opts, size: tuple or int):
 
         interpolation = getattr(opts, "image_augmentation.random_resized_crop.interpolation", "bilinear")
@@ -1152,6 +1154,22 @@ class NumpyToTensor(BaseTransformation):
         if mask is not None:
             data["mask"] = torch.from_numpy(mask).long()
 
+        return data
+
+
+@register_transformations(name="normalize", type="image")
+class Normalize(BaseTransformation):
+    def __init__(self, opts, *args, **kwargs):
+        super(Normalize, self).__init__(opts=opts)
+        self.mean = kwargs["mean"]
+        self.std = kwargs["std"]
+        assert len(self.mean) == 3
+        assert len(self.std) == 3
+
+    def __call__(self, data: Dict) -> Dict:
+        img = data["image"]
+        img_normalize = F.normalize(img, self.mean, self.std)
+        data["image"] = img_normalize
         return data
 
 

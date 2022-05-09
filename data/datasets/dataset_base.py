@@ -91,7 +91,9 @@ class BaseImageDataset(data.Dataset):
 
     @staticmethod
     def read_image(path: str):
-        return cv2.imread(path, cv2.IMREAD_COLOR) # Image is read in BGR Format and not RGB format
+        img = cv2.imread(path, cv2.IMREAD_COLOR)
+        im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        return im_rgb
 
     @staticmethod
     def read_mask(path: str):

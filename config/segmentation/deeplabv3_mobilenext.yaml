@@ -10,8 +10,8 @@ dataset:
 #  root_val: "/home/maaz/PycharmProjects/data/mobilevit_segmentation/vision_datasets/pascal_voc/VOCdevkit"
   name: "pascal"
   category: "segmentation"
-#  train_batch_size0: 32
-#  val_batch_size0: 16
+  train_batch_size0: 32
+  val_batch_size0: 16
   eval_batch_size0: 1
   workers: 8
   persistent_workers: false
@@ -72,7 +72,7 @@ model:
       aspp_rates: [6, 12, 18]
   classification:
     name: "mobilenext"
-    classifier_dropout: 0.4
+    classifier_dropout: 0.1
     activation:
       name: "gelu"
     pretrained: "/home/muhammad.maaz/v04_dw2_xca_mlp_V01/mobilevit/classification_weights/v04_dw2_xca_mlp_V01_cvnet.pt"

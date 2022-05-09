@@ -64,7 +64,7 @@ class ImagenetDataset(BaseImageDataset, ImageFolder):
         assert isinstance(size, int)
         # (256 - 224) = 32
         # where 224/0.875 = 256
-        scale_size = size + 32 # int(make_divisible(crop_size / 0.875, divisor=32))
+        scale_size = size + 36  # int(make_divisible(crop_size / 0.875, divisor=32))
 
         return tf.Compose(opts=self.opts, img_transforms=[
             tf.Resize(opts=self.opts, size=scale_size),

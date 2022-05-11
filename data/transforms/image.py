@@ -1323,7 +1323,7 @@ class PhotometricDistort(BaseTransformation):
         image += beta
 
         image = convert_to_uint8(image)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
         image = image.astype(np.float32)
 
         # Apply random saturation
@@ -1335,7 +1335,7 @@ class PhotometricDistort(BaseTransformation):
         image[..., 0] += delta
 
         image = convert_to_uint8(image)
-        image = cv2.cvtColor(image, cv2.COLOR_HSV2BGR)
+        image = cv2.cvtColor(image, cv2.COLOR_HSV2RGB)
 
         if alpha == 1.0 and rand_nums[4] < self.p:
             # apply contrast if earlier not applied

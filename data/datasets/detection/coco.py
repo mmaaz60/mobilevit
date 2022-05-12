@@ -85,6 +85,7 @@ class COCODetection(BaseImageDataset):
             aug_list.append(tf.Resize(opts=self.opts, size=size))
 
         aug_list.append(tf.NumpyToTensor(opts=self.opts))
+        aug_list.append(tf.Normalize(opts=self.opts, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]))
         return tf.Compose(opts=self.opts, img_transforms=aug_list)
 
     def __getitem__(self, batch_indexes_tup: Tuple) -> Dict:

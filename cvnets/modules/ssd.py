@@ -40,12 +40,13 @@ class SSDHead(BaseModule):
             self.proj_channels = proj_channels
         ######
         self.proj_layer = proj_layer
-        self.nomr_proj = get_normalization_layer(opts=opts, num_features=proj_channels,
-                                                 norm_type="layer_norm_convnext", data_format="channels_first")
-        neg_slope = getattr(opts, "model.activation.neg_slope", 0.1)
-        inplace = getattr(opts, "model.activation.inplace", False)
-        self.act_proj = get_activation_fn(act_type='gelu', negative_slope=neg_slope,
-                                          inplace=inplace, num_parameters=proj_channels)
+        if self.proj_layer is not None:
+            self.nomr_proj = get_normalization_layer(opts=opts, num_features=proj_channels,
+                                                     norm_type="layer_norm_convnext", data_format="channels_first")
+            neg_slope = getattr(opts, "model.activation.neg_slope", 0.1)
+            inplace = getattr(opts, "model.activation.inplace", False)
+            self.act_proj = get_activation_fn(act_type='gelu', negative_slope=neg_slope,
+                                              inplace=inplace, num_parameters=proj_channels)
         ######
         conv_fn = ConvLayer if kernel_size == 1 else SeparableConv
         self.loc_cls_layer = conv_fn(opts=opts, in_channels=in_channels,

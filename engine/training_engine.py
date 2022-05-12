@@ -162,6 +162,10 @@ class Trainer(object):
             # perform the backward pass with gradient accumulation [Optional]
             self.gradient_scalar.scale(loss).backward()
 
+            # for name, param in self.model.named_parameters():
+            #     if param.grad is None:
+            #         print(name)
+
             if (batch_id + 1) % accum_freq == 0:
                 if max_norm is not None:
                     # For gradient clipping, unscale the gradients and then clip them

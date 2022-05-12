@@ -15,5 +15,5 @@ srun --ntasks=1 --ntasks-per-node=1 \
 
 timeout 35.5h python main_train.py --common.config-file config/detection/ssd_mobilenext_320.yaml --common.results-loc results_coco_mobilenext --dataset.root-train "$LOCAL_SCRATCH" --dataset.root-val "$LOCAL_SCRATCH"
 if [[ $? -eq 124 ]]; then
-  sbatch ./run_on_mahti.sh
+  sbatch ./run_on_mahti_detection.sh
 fi

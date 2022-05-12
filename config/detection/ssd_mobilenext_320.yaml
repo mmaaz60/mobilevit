@@ -10,8 +10,8 @@ dataset:
 #  root_val: "/home/maaz/PycharmProjects/data/coco"
   name: "coco_ssd"
   category: "detection"
-  train_batch_size0: 32
-  val_batch_size0: 16
+  train_batch_size0: 16
+  val_batch_size0: 8
   eval_batch_size0: 1
   workers: 8
   persistent_workers: false
@@ -29,7 +29,7 @@ loss:
       neg_pos_ratio: 3
 optim:
   name: "adamw"
-  weight_decay: 0.01
+  weight_decay: 0.02
   no_decay_bn_filter_bias: false
   adamw:
     beta1: 0.9

@@ -12,7 +12,7 @@ from torchvision.ops import nms as torch_nms
 
 from . import register_detection_models
 from .base_detection import BaseDetection, DetectionPredTuple
-from ...layers import ConvLayer, SeparableConv, AdaptiveAvgPool2d
+from ...layers import ConvLayer, SeparableConv, AdaptiveAvgPool2d, get_activation_fn
 from ...modules import SSDHead
 from ...models.classification import BaseEncoder
 from ...misc.init_utils import initialize_conv_layer
@@ -27,7 +27,7 @@ class SingleShotDetector(BaseDetection):
     This class implements Single Shot Object Detector
         https://arxiv.org/abs/1512.02325
     """
-    coordinates = 4 # 4 coordinates (x, y, x1, y1) or (x, y, w, h)
+    coordinates = 4  # 4 coordinates (x, y, x1, y1) or (x, y, w, h)
 
     def __init__(self, opts, encoder: BaseEncoder):
         super(SingleShotDetector, self).__init__(opts=opts, encoder=encoder)
@@ -36,7 +36,7 @@ class SingleShotDetector(BaseDetection):
         self.encoder.classifier = None
         self.encoder.conv_1x1_exp = None
 
-        output_strides = getattr(opts, "model.detection.ssd.output_strides", [16, 32, 64, 128, 256, -1 ])
+        output_strides = getattr(opts, "model.detection.ssd.output_strides", [16, 32, 64, 128, 256, -1])
         n_os = len(output_strides)
 
         anchors_aspect_ratio = getattr(opts, "model.detection.ssd.anchors_aspect_ratio", [[2, 3]] * len(output_strides))
@@ -81,10 +81,14 @@ class SingleShotDetector(BaseDetection):
                 enc_channels_list.append(out_channels)
                 in_channels = out_channels
             elif os == -1:
+                neg_slope = getattr(opts, "model.activation.neg_slope", 0.1)
+                inplace = getattr(opts, "model.activation.inplace", False)
                 extra_layers["os_{}".format(os)] = nn.Sequential(
                     AdaptiveAvgPool2d(output_size=1),
                     ConvLayer(opts=opts, in_channels=in_channels, out_channels=out_channels, kernel_size=1,
-                              use_act=True, use_norm=False)
+                              use_act=False, use_norm=False),
+                    get_activation_fn(act_type='gelu', negative_slope=neg_slope,
+                                      inplace=inplace, num_parameters=proj_channels)
                 )
                 enc_channels_list.append(out_channels)
                 in_channels = out_channels
@@ -110,7 +114,8 @@ class SingleShotDetector(BaseDetection):
         self.ssd_heads = nn.ModuleList()
 
         # Create SSD detection and classification heads
-        for os, in_dim, proj_dim, n_anchors in zip(output_strides, enc_channels_list, proj_channels, anchors_aspect_ratio):
+        for os, in_dim, proj_dim, n_anchors in zip(output_strides, enc_channels_list, proj_channels,
+                                                   anchors_aspect_ratio):
             self.ssd_heads += [
                 SSDHead(opts=opts,
                         in_channels=in_dim,
@@ -201,7 +206,7 @@ class SingleShotDetector(BaseDetection):
             elif os == 32:
                 fm_h, fm_w = enc_end_points["out_l5"].shape[2:]
                 loc, pred = ssd_head(enc_end_points["out_l5"])
-            else: # for all other feature maps with os > 32
+            else:  # for all other feature maps with os > 32
                 x = self.extra_layers["os_{}".format(os)](x)
                 fm_h, fm_w = x.shape[2:]
                 loc, pred = ssd_head(x)
@@ -249,7 +254,7 @@ class SingleShotDetector(BaseDetection):
             boxes = box_utils.center_form_to_corner_form(boxes)
 
         # post-process the boxes and scores
-        boxes = boxes[0] # remove the batch dimension
+        boxes = boxes[0]  # remove the batch dimension
         scores = scores[0]
 
         object_labels = []
@@ -324,7 +329,7 @@ class SingleShotDetector(BaseDetection):
                 _, p, m = module_profile(module=ssd_head, x=enc_end_points["out_l5"])
                 ssd_head_params += p
                 ssd_head_macs += m
-            else: # for all other feature maps with os > 32
+            else:  # for all other feature maps with os > 32
                 x, p1, m1 = module_profile(module=self.extra_layers["os_{}".format(os)], x=x)
                 _, p2, m2 = module_profile(module=ssd_head, x=x)
                 ssd_head_params += (p1 + p2)

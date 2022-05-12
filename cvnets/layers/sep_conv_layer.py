@@ -8,6 +8,8 @@ from typing import Optional
 from ..misc.profiler import module_profile
 from .base_layer import BaseLayer
 from .conv_layer import ConvLayer
+from .normalization_layers import get_normalization_layer
+from .non_linear_layers import get_activation_fn
 
 
 class SeparableConv(BaseLayer):
@@ -31,13 +33,27 @@ class SeparableConv(BaseLayer):
         self.dw_conv = ConvLayer(
             opts=opts, in_channels=in_channels, out_channels=in_channels, kernel_size=kernel_size,
             stride=stride, dilation=dilation, groups=in_channels, bias=False, padding_mode=padding_mode,
-            use_norm=True, use_act=False
+            use_norm=False, use_act=False
         )
+        self.norm_1 = get_normalization_layer(opts=opts, num_features=in_channels,
+                                              norm_type="layer_norm_convnext", data_format="channels_first")
         self.pw_conv = ConvLayer(
             opts=opts, in_channels=in_channels, out_channels=out_channels, kernel_size=1,
             stride=1, dilation=1, groups=1, bias=bias, padding_mode=padding_mode,
-            use_norm=use_norm, use_act=use_act
+            use_norm=False, use_act=False
         )
+        self.norm_2 = None
+        if use_norm:
+            self.norm_2 = get_normalization_layer(opts=opts, num_features=out_channels,
+                                                  norm_type="layer_norm_convnext", data_format="channels_first")
+        self.act = None
+        if use_act:
+            neg_slope = getattr(opts, "model.activation.neg_slope", 0.1)
+            inplace = getattr(opts, "model.activation.inplace", False)
+            self.act_layer = get_activation_fn(act_type='gelu',
+                                               inplace=inplace,
+                                               negative_slope=neg_slope,
+                                               num_parameters=out_channels)
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.stride = stride
@@ -57,7 +73,12 @@ class SeparableConv(BaseLayer):
 
     def forward(self, x: Tensor) -> Tensor:
         x = self.dw_conv(x)
+        x = self.norm_1(x)
         x = self.pw_conv(x)
+        if self.norm_2:
+            x = self.norm_2(x)
+        if self.act:
+            x = self.act(x)
         return x
 
     def profile_module(self, input: Tensor) -> (Tensor, float, float):

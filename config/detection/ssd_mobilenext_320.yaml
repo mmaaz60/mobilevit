@@ -61,10 +61,10 @@ model:
       name: "gelu"
     pretrained: "v04_dw2_xca_mlp_V01_cvnet.pt"
   normalization:
-    name: "sync_batch_norm"
+    name: "layer_norm_convnext"
     momentum: 0.1
   activation:
-    name: "relu" # If specific activation function is not specified, this one will be used as a default
+    name: "gelu" # If specific activation function is not specified, this one will be used as a default
     inplace: false
   layer:
     global_pool: "mean"

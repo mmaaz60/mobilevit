@@ -7,7 +7,7 @@ import torch
 from torch import nn, Tensor
 from typing import Optional, List, Union, Tuple
 
-from ..layers import ConvLayer, SeparableConv
+from ..layers import ConvLayer, SeparableConv, get_activation_fn, get_normalization_layer
 from ..modules import BaseModule, PPM
 from ..misc.profiler import module_profile
 from ..misc.init_utils import initialize_conv_layer
@@ -34,13 +34,19 @@ class SSDHead(BaseModule):
         if proj_channels != -1 and proj_channels != in_channels and kernel_size > 1:
             proj_layer = ConvLayer(
                 opts=opts, in_channels=in_channels, out_channels=proj_channels, kernel_size=1,
-                stride=1, groups=1, bias=False, use_norm=True, use_act=True
+                stride=1, groups=1, bias=False, use_norm=False, use_act=False
             )
             in_channels = proj_channels
             self.proj_channels = proj_channels
-
+        ######
         self.proj_layer = proj_layer
-
+        self.nomr_proj = get_normalization_layer(opts=opts, num_features=proj_channels,
+                                                 norm_type="layer_norm_convnext", data_format="channels_first")
+        neg_slope = getattr(opts, "model.activation.neg_slope", 0.1)
+        inplace = getattr(opts, "model.activation.inplace", False)
+        self.act_proj = get_activation_fn(act_type='gelu', negative_slope=neg_slope,
+                                          inplace=inplace, num_parameters=proj_channels)
+        ######
         conv_fn = ConvLayer if kernel_size == 1 else SeparableConv
         self.loc_cls_layer = conv_fn(opts=opts, in_channels=in_channels,
                                      out_channels=n_anchors * (n_coordinates + n_classes),
@@ -79,6 +85,8 @@ class SSDHead(BaseModule):
 
         if self.proj_layer is not None:
             x = self.proj_layer(x)
+            x = self.nomr_proj(x)
+            x = self.act_proj(x)
 
         # [B x C x H x W] --> [B x Anchors * (coordinates + classes) x H x W]
         x = self.loc_cls_layer(x)

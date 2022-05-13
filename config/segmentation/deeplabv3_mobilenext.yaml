@@ -43,7 +43,7 @@ loss:
 optim:
   name: "adamw"
   weight_decay: 0.01
-  no_decay_bn_filter_bias: false
+  no_decay_bn_filter_bias: True
   adamw:
     beta1: 0.9
     beta2: 0.999

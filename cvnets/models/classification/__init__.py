@@ -38,6 +38,7 @@ def build_classification_model(opts, *args, **kwargs):
     model_name = getattr(opts, "model.classification.name", None)
     model = None
     is_master_node = is_master(opts)
+    print ("The name of the model is ",model_name)
     if model_name in CLS_MODEL_REGISTRY:
         cls_act_fn = getattr(opts, "model.classification.activation.name", None)
         if cls_act_fn is not None:

@@ -59,17 +59,20 @@ def main(opts, **kwargs):
             logger.log('Max. epochs for training: {}'.format(max_epochs))
     # set-up the model
     model = get_model(opts)
-
+    print("device is ",device)
     if num_gpus == 0:
         logger.error('Need atleast 1 GPU for training. Got {} GPUs'.format(num_gpus))
     elif num_gpus == 1:
         model = model.to(device=device)
+        print("Inside 1 GPU")
     elif is_distributed:
         model = model.to(device=device)
         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[dev_id], output_device=dev_id)
         if is_master_node:
             logger.log('Using DistributedDataParallel for training')
+        print("inside is_distributed:")
     else:
+        print("Inside else")
         model = torch.nn.DataParallel(model)
         model = model.to(device=device)
         if is_master_node:
@@ -263,7 +266,7 @@ def main_worker(**kwargs):
     run_label = getattr(opts, "common.run_label", "run_1")
     exp_dir = '{}/{}'.format(save_dir, run_label)
     setattr(opts, "common.exp_loc", exp_dir)
-    create_directories(dir_path=exp_dir, is_master_node=is_master_node)
+    #create_directories(dir_path=exp_dir, is_master_node=is_master_node)
 
     num_gpus = getattr(opts, "dev.num_gpus", 1)
     world_size = getattr(opts, "ddp.world_size", -1)

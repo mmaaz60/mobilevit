@@ -73,6 +73,7 @@ def device_setup(opts):
 
 def create_directories(dir_path: str, is_master_node: bool) -> None:
     if not os.path.isdir(dir_path):
+        print ("Path : ",dir_path)
         os.makedirs(dir_path)
         if is_master_node:
             logger.log('Directory created at: {}'.format(dir_path))

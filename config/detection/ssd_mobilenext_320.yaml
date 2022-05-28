@@ -6,12 +6,12 @@ common:
   auto_resume: true
   mixed_precision: true
 dataset:
-  root_train: "/home/muhammad.maaz/v04_dw2_xca_mlp_V01/mobilevit/datasets/coco/coco"
-  root_val: "/home/muhammad.maaz/v04_dw2_xca_mlp_V01/mobilevit/datasets/coco/coco"
+  root_train: "/nfs/users/ext_muhammad.haris/maaz/MobileNeXt_EXP/coco/"
+  root_val: "/nfs/users/ext_muhammad.haris/maaz/MobileNeXt_EXP/coco/"
   name: "coco_ssd"
   category: "detection"
-#  train_batch_size0: 1
-#  val_batch_size0: 1
+  train_batch_size0: 32
+  val_batch_size0: 32
   eval_batch_size0: 1
   workers: 8
   persistent_workers: false
@@ -59,7 +59,7 @@ model:
     classifier_dropout: 0.0
     activation:
       name: "gelu"
-    pretrained: "/home/muhammad.maaz/v04_dw2_xca_mlp_V01/mobilevit/classification_weights/v04_dw2_xca_mlp_V01_cvnet.pt"
+      #pretrained: "" #"classification_weights/mobilenext.pt"
   normalization:
     name: "layer_norm_convnext"
     momentum: 0.1

@@ -80,6 +80,7 @@ class Trainer(object):
             self.metric_names.append(self.metric_names)
 
         self.ckpt_metric = getattr(self.opts, "stats.checkpoint_metric", "loss")
+        #self.ckpt_metric = "loss"
         assert self.ckpt_metric in self.metric_names, \
             "Checkpoint metric should be part of metric names. Metric names: {}, Checkpoint metric: {}".format(
                 self.metric_names, self.ckpt_metric)

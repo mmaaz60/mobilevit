@@ -1,0 +1,426 @@
+Namespace(**{'adjust_bn_momentum.anneal_type': 'cosine', 'adjust_bn_momentum.enable': False, 'adjust_bn_momentum.final_momentum_value': 1e-06, 'common.accum_after_epoch': -1, 'common.accum_freq': 1, 'common.auto_resume': True, 'common.config_file': '/nfs/projects/mbzuai/ashaker_2/mobilevit/config/detection/ssd_mobilevit_small_320.yaml', 'common.finetune': None, 'common.finetune_ema': None, 'common.grad_clip': None, 'common.k_best_checkpoints': 5, 'common.log_freq': 500, 'common.mixed_precision': True, 'common.results_loc': '/result_detection', 'common.resume': None, 'common.run_label': 'run_1', 'common.seed': 0, 'common.stats_only': True, 'dataset.augmentation.blur_kernel_range': None, 'dataset.augmentation.gamma_corr_range': None, 'dataset.augmentation.gauss_noise_var': None, 'dataset.augmentation.jpeg_q_range': None, 'dataset.augmentation.rotate_angle': None, 'dataset.augmentation.translate_factor': None, 'dataset.category': 'detection', 'dataset.eval_batch_size0': 1, 'dataset.name': 'coco_ssd', 'dataset.pascal.coco_root_dir': None, 'dataset.pascal.use_coco_data': False, 'dataset.persistent_workers': False, 'dataset.pin_memory': True, 'dataset.root_test': '', 'dataset.root_train': '/nfs/users/ext_muhammad.haris/maaz/MobileNeXt_EXP/coco/', 'dataset.root_val': '/nfs/users/ext_muhammad.haris/maaz/MobileNeXt_EXP/coco/', 'dataset.train_batch_size0': 32, 'dataset.val_batch_size0': 32, 'dataset.workers': 8, 'ddp.dist_port': 30786, 'ddp.dist_url': None, 'ddp.enable': True, 'ddp.rank': 0, 'ddp.world_size': -1, 'ema.copy_at_epoch': -1, 'ema.enable': True, 'ema.momentum': 0.0005, 'image_augmentation.box_absolute_coords.enable': False, 'image_augmentation.box_percent_coords.enable': False, 'image_augmentation.center_crop.enable': False, 'image_augmentation.photo_metric_distort.alpha_max': 1.5, 'image_augmentation.photo_metric_distort.alpha_min': 0.5, 'image_augmentation.photo_metric_distort.beta_max': 0.2, 'image_augmentation.photo_metric_distort.beta_min': -0.2, 'image_augmentation.photo_metric_distort.delta_max': 0.05, 'image_augmentation.photo_metric_distort.delta_min': -0.05, 'image_augmentation.photo_metric_distort.enable': False, 'image_augmentation.photo_metric_distort.gamma_max': 1.5, 'image_augmentation.photo_metric_distort.gamma_min': 0.5, 'image_augmentation.photo_metric_distort.p': 0.5, 'image_augmentation.random_blur.enable': False, 'image_augmentation.random_blur.kernel_size': [3, 7], 'image_augmentation.random_blur.kernel_type': 255, 'image_augmentation.random_blur.p': 0.5, 'image_augmentation.random_crop.enable': False, 'image_augmentation.random_crop.mask_fill': 255, 'image_augmentation.random_crop.resize_if_needed': False, 'image_augmentation.random_flip.enable': False, 'image_augmentation.random_gamma_correction.enable': False, 'image_augmentation.random_gamma_correction.gamma': (0.5, 1.5), 'image_augmentation.random_gamma_correction.p': 0.5, 'image_augmentation.random_gauss_noise.enable': False, 'image_augmentation.random_gauss_noise.p': 0.5, 'image_augmentation.random_gauss_noise.sigma': (0.03, 0.1), 'image_augmentation.random_horizontal_flip.enable': False, 'image_augmentation.random_horizontal_flip.p': 0.5, 'image_augmentation.random_jpeg_compress.enable': False, 'image_augmentation.random_jpeg_compress.p': 0.5, 'image_augmentation.random_jpeg_compress.q_factor': (5, 25), 'image_augmentation.random_order.apply_k': 1.0, 'image_augmentation.random_order.enable': False, 'image_augmentation.random_resize.enable': False, 'image_augmentation.random_resize.interpolation': 'bilinear', 'image_augmentation.random_resize.max_size': 1024, 'image_augmentation.random_resize.min_size': 256, 'image_augmentation.random_resized_crop.aspect_ratio': (0.75, 1.3333333333333333), 'image_augmentation.random_resized_crop.enable': False, 'image_augmentation.random_resized_crop.interpolation': 'bilinear', 'image_augmentation.random_resized_crop.scale': (0.08, 1.0), 'image_augmentation.random_rotate.angle': 10.0, 'image_augmentation.random_rotate.enable': False, 'image_augmentation.random_rotate.fill_mask': 255, 'image_augmentation.random_rotate.interpolation': 'bilinear', 'image_augmentation.random_rotate.p': 0.5, 'image_augmentation.random_scale.enable': False, 'image_augmentation.random_scale.interpolation': 'bilinear', 'image_augmentation.random_scale.max_scale': 2.0, 'image_augmentation.random_scale.min_scale': 0.5, 'image_augmentation.random_translate.enable': False, 'image_augmentation.random_translate.factor': 0.2, 'image_augmentation.random_vertical_flip.enable': False, 'image_augmentation.random_vertical_flip.p': 0.5, 'image_augmentation.random_zoom_out.enable': False, 'image_augmentation.random_zoom_out.p': 0.5, 'image_augmentation.random_zoom_out.side_range': [1, 4], 'image_augmentation.resize.enable': False, 'image_augmentation.resize.interpolation': 'bilinear', 'image_augmentation.resize.no_maintain_aspect_ratio': False, 'loss.category': 'detection', 'loss.classification.cross_entropy_class_weights': False, 'loss.classification.label_smoothing_factor': 0.1, 'loss.classification.name': 'cross_entropy', 'loss.detection.name': 'ssd_multibox_loss', 'loss.detection.ssd_multibox_loss.max_monitor_iter': -1, 'loss.detection.ssd_multibox_loss.neg_pos_ratio': 3, 'loss.detection.ssd_multibox_loss.update_wt_freq': 200, 'loss.distillation.name': 'vanilla', 'loss.distillation.vanilla_accum_iterations': 10000, 'loss.distillation.vanilla_adaptive_weight_balance': False, 'loss.distillation.vanilla_alpha': 0.5, 'loss.distillation.vanilla_distillation_type': 'soft', 'loss.distillation.vanilla_label_loss': 'cross_entropy', 'loss.distillation.vanilla_tau': 1.0, 'loss.distillation.vanilla_teacher_model': 'resnet_50', 'loss.distillation.vanilla_teacher_model_weights': None, 'loss.distillation.vanilla_weight_update_freq': 100, 'loss.ignore_idx': -1, 'loss.segmentation.cross_entropy_aux_weight': 0.4, 'loss.segmentation.cross_entropy_class_weights': False, 'loss.segmentation.name': 'cross_entropy', 'model.activation.inplace': False, 'model.activation.name': 'relu', 'model.activation.neg_slope': 0.1, 'model.classification.activation.inplace': False, 'model.classification.activation.name': 'swish', 'model.classification.activation.neg_slope': 0.1, 'model.classification.classifier_dropout': 0.1, 'model.classification.freeze_batch_norm': False, 'model.classification.mit.attn_dropout': 0.0, 'model.classification.mit.conv_kernel_size': 3, 'model.classification.mit.dropout': 0.1, 'model.classification.mit.ffn_dropout': 0.0, 'model.classification.mit.head_dim': None, 'model.classification.mit.mode': 'small', 'model.classification.mit.no_fuse_local_global_features': False, 'model.classification.mit.number_heads': 4, 'model.classification.mit.transformer_norm_layer': 'layer_norm', 'model.classification.mobilenetv2.width_multiplier': 1.0, 'model.classification.n_classes': 1000, 'model.classification.name': 'mobilevit', 'model.classification.pretrained': 'https://docs-assets.developer.apple.com/ml-research/models/cvnets/classification/mobilevit_s.pt', 'model.classification.resnet.depth': 50, 'model.detection.freeze_batch_norm': False, 'model.detection.n_classes': None, 'model.detection.name': 'ssd', 'model.detection.output_stride': None, 'model.detection.pretrained': None, 'model.detection.replace_stride_with_dilation': False, 'model.detection.ssd.anchors_aspect_ratio': [[2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2]], 'model.detection.ssd.center_variance': 0.1, 'model.detection.ssd.conf_threshold': 0.05, 'model.detection.ssd.iou_threshold': 0.5, 'model.detection.ssd.max_box_size': 1.05, 'model.detection.ssd.min_box_size': 0.1, 'model.detection.ssd.nms_iou_threshold': 0.5, 'model.detection.ssd.num_objects_per_class': 200, 'model.detection.ssd.output_strides': [16, 32, 64, 128, 256, -1], 'model.detection.ssd.proj_channels': [512, 256, 256, 128, 128, 64], 'model.detection.ssd.size_variance': 0.2, 'model.layer.conv_init': 'kaiming_normal', 'model.layer.conv_init_std_dev': None, 'model.layer.global_pool': 'mean', 'model.layer.group_linear_init': 'xavier_uniform', 'model.layer.group_linear_init_std_dev': 0.01, 'model.layer.linear_init': 'normal', 'model.layer.linear_init_std_dev': 0.01, 'model.normalization.groups': 32, 'model.normalization.momentum': 0.1, 'model.normalization.name': 'sync_batch_norm', 'model.segmentation.activation.inplace': False, 'model.segmentation.activation.name': None, 'model.segmentation.activation.neg_slope': 0.1, 'model.segmentation.classifier_dropout': 0.1, 'model.segmentation.deeplabv3.aspp_dropout': 0.1, 'model.segmentation.deeplabv3.aspp_out_channels': 256, 'model.segmentation.deeplabv3.aspp_rates': (6, 12, 18), 'model.segmentation.deeplabv3.aspp_sep_conv': False, 'model.segmentation.freeze_batch_norm': False, 'model.segmentation.lr_multiplier': 1.0, 'model.segmentation.n_classes': None, 'model.segmentation.name': None, 'model.segmentation.output_stride': None, 'model.segmentation.pretrained': None, 'model.segmentation.replace_stride_with_dilation': False, 'model.segmentation.seg_head': 'basic', 'model.segmentation.use_aux_head': False, 'model.segmentation.use_level5_exp': False, 'optim.adam.amsgrad': False, 'optim.adam.beta1': 0.9, 'optim.adam.beta2': 0.98, 'optim.adamw.amsgrad': False, 'optim.adamw.beta1': 0.9, 'optim.adamw.beta2': 0.999, 'optim.eps': 1e-08, 'optim.name': 'adamw', 'optim.no_decay_bn_filter_bias': False, 'optim.sgd.momentum': 0.9, 'optim.sgd.nesterov': False, 'optim.weight_decay': 0.01, 'sampler.bs.crop_size_height': 320, 'sampler.bs.crop_size_width': 320, 'sampler.name': 'batch_sampler', 'sampler.vbs.check_scale': 32, 'sampler.vbs.crop_size_height': 256, 'sampler.vbs.crop_size_width': 256, 'sampler.vbs.ep_intervals': [40], 'sampler.vbs.max_crop_size_height': 320, 'sampler.vbs.max_crop_size_width': 320, 'sampler.vbs.max_n_scales': 5, 'sampler.vbs.min_crop_size_height': 160, 'sampler.vbs.min_crop_size_width': 160, 'sampler.vbs.scale_inc': False, 'sampler.vbs.scale_inc_factor': 0.25, 'scheduler.cosine.max_lr': 0.0009, 'scheduler.cosine.min_lr': 1e-06, 'scheduler.cyclic.epochs_per_cycle': 5, 'scheduler.cyclic.gamma': 0.5, 'scheduler.cyclic.last_cycle_end_lr': 0.001, 'scheduler.cyclic.last_cycle_type': 'linear', 'scheduler.cyclic.min_lr': 0.1, 'scheduler.cyclic.steps': None, 'scheduler.cyclic.total_cycles': 11, 'scheduler.is_iteration_based': False, 'scheduler.lr': 0.1, 'scheduler.max_epochs': 200, 'scheduler.max_iterations': None, 'scheduler.name': 'cosine', 'scheduler.polynomial.end_lr': 1e-05, 'scheduler.polynomial.power': 2.5, 'scheduler.polynomial.start_lr': 0.1, 'scheduler.warmup_init_lr': 9e-05, 'scheduler.warmup_iterations': 500, 'stats.checkpoint_metric': 'loss', 'stats.checkpoint_metric_max': False, 'stats.name': ['loss']})
+2022-05-25 02:56:45 - [34m[1mLOGS   [0m - Random seeds are set to 0
+2022-05-25 02:56:45 - [34m[1mLOGS   [0m - Using PyTorch version 1.11.0+cu102
+2022-05-25 02:56:45 - [34m[1mLOGS   [0m - Available GPUs: 1
+2022-05-25 02:56:45 - [34m[1mLOGS   [0m - CUDNN is enabled
+loading annotations into memory...
+Done (t=16.38s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=2.15s)
+creating index...
+index created!
+2022-05-25 02:57:05 - [34m[1mLOGS   [0m - Training and validation dataset details: 
+COCODetectionSSD(
+	root=/nfs/users/ext_muhammad.haris/maaz/MobileNeXt_EXP/coco/
+	 is_training=True
+	samples=117266
+	transforms=Compose(
+			SSDCroping(), 
+			PhotometricDistort(), 
+			RandomHorizontalFlip(p=0.5), 
+			BoxPercentCoords(), 
+			Resize(size=(320, 320), interpolation=bilinear), 
+			NumpyToTensor())
+)
+COCODetectionSSD(
+	root=/nfs/users/ext_muhammad.haris/maaz/MobileNeXt_EXP/coco/
+	 is_training=False
+	samples=5000
+	transforms=Compose(
+			BoxPercentCoords(), 
+			Resize(size=(320, 320), interpolation=bilinear), 
+			NumpyToTensor())
+)
+2022-05-25 02:57:05 - [34m[1mLOGS   [0m - Training sampler details: 
+BatchSampler(
+ 	 base_im_size=(h=320, w=320)
+ 	 base_batch_size=32
+	
+)
+2022-05-25 02:57:05 - [34m[1mLOGS   [0m - Validation sampler details: 
+BatchSampler(
+ 	 base_im_size=(h=320, w=320)
+ 	 base_batch_size=32
+	
+)
+2022-05-25 02:57:05 - [34m[1mLOGS   [0m - Number of data workers: 8
+2022-05-25 02:57:05 - [34m[1mLOGS   [0m - Max. epochs for training: 200
+2022-05-25 02:57:09 - [34m[1mLOGS   [0m - Pretrained weights are loaded from /tmp/mobilevit_s.pt
+Warning: module Conv2d is treated as a zero-op.
+Warning: module BatchNorm2d is treated as a zero-op.
+Warning: module Swish is treated as a zero-op.
+Warning: module ConvLayer is treated as a zero-op.
+Warning: module InvertedResidual is treated as a zero-op.
+Warning: module LayerNorm is treated as a zero-op.
+Warning: module LinearLayer is treated as a zero-op.
+Warning: module Dropout is treated as a zero-op.
+Warning: module Softmax is treated as a zero-op.
+Warning: module MultiHeadAttention is treated as a zero-op.
+Warning: module TransformerEncoder is treated as a zero-op.
+Warning: module MobileViTBlock is treated as a zero-op.
+Warning: module MobileViT is treated as a zero-op.
+Warning: module ReLU is treated as a zero-op.
+Warning: module SeparableConv is treated as a zero-op.
+Warning: module AdaptiveAvgPool2d is treated as a zero-op.
+Warning: module ModuleDict is treated as a zero-op.
+Warning: module SSDAnchorGenerator is treated as a zero-op.
+Warning: module SSDHead is treated as a zero-op.
+Warning: module SingleShotDetector is treated as a zero-op.
+SingleShotDetector(
+  0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+  (encoder): MobileViT(
+    0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+    (conv_1): Conv2d(0, 0.000% Params, 0.0 Mac, 0.000% MACs, 3, 16, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False, normalization=BatchNorm2d, activation=Swish, bias=False)
+    (layer_1): Sequential(
+      0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+      (0): InvertedResidual(in_channels=16, out_channels=32, stride=1, exp=4, dilation=1)
+    )
+    (layer_2): Sequential(
+      0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+      (0): InvertedResidual(in_channels=32, out_channels=64, stride=2, exp=4, dilation=1)
+      (1): InvertedResidual(in_channels=64, out_channels=64, stride=1, exp=4, dilation=1)
+      (2): InvertedResidual(in_channels=64, out_channels=64, stride=1, exp=4, dilation=1)
+    )
+    (layer_3): Sequential(
+      0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+      (0): InvertedResidual(in_channels=64, out_channels=96, stride=2, exp=4, dilation=1)
+      (1): MobileViTBlock(
+      	conv_in_dim=96, conv_out_dim=144, dilation=1, conv_ksize=3
+      	patch_h=2, patch_w=2
+      	transformer_in_dim=144, transformer_n_heads=4, transformer_ffn_dim=288, dropout=0.1, ffn_dropout=0.0, attn_dropout=0.0, blocks=2
+      )
+    )
+    (layer_4): Sequential(
+      0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+      (0): InvertedResidual(in_channels=96, out_channels=128, stride=2, exp=4, dilation=1)
+      (1): MobileViTBlock(
+      	conv_in_dim=128, conv_out_dim=192, dilation=1, conv_ksize=3
+      	patch_h=2, patch_w=2
+      	transformer_in_dim=192, transformer_n_heads=4, transformer_ffn_dim=384, dropout=0.1, ffn_dropout=0.0, attn_dropout=0.0, blocks=4
+      )
+    )
+    (layer_5): Sequential(
+      0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+      (0): InvertedResidual(in_channels=128, out_channels=160, stride=2, exp=4, dilation=1)
+      (1): MobileViTBlock(
+      	conv_in_dim=160, conv_out_dim=240, dilation=1, conv_ksize=3
+      	patch_h=2, patch_w=2
+      	transformer_in_dim=240, transformer_n_heads=4, transformer_ffn_dim=480, dropout=0.1, ffn_dropout=0.0, attn_dropout=0.0, blocks=3
+      )
+    )
+    (conv_1x1_exp): None
+    (classifier): None
+  )
+  (extra_layers): ModuleDict(
+    0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+    (os_64): SeparableConv(in_channels=160, out_channels=256, kernel_size=3, stride=2, dilation=1)
+    (os_128): SeparableConv(in_channels=256, out_channels=128, kernel_size=3, stride=2, dilation=1)
+    (os_256): SeparableConv(in_channels=128, out_channels=128, kernel_size=3, stride=2, dilation=1)
+    (os_-1): Sequential(
+      0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+      (0): AdaptiveAvgPool2d(0, 0.000% Params, 0.0 Mac, 0.000% MACs, output_size=1)
+      (1): Conv2d(0, 0.000% Params, 0.0 Mac, 0.000% MACs, 128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False, activation=ReLU, bias=False)
+    )
+  )
+  (anchor_box_generator): SSDAnchorGenerator(0, 0.000% Params, 0.0 Mac, 0.000% MACs, )
+  (ssd_heads): ModuleList(
+    0, 0.000% Params, 0.0 Mac, 0.000% MACs, 
+    (0): SSDHead(in_channels=128, n_anchors=6, n_classes=81, n_coordinates=4, kernel_size=3, proj=True, proj_channels=512)
+    (1): SSDHead(in_channels=160, n_anchors=6, n_classes=81, n_coordinates=4, kernel_size=3, proj=True, proj_channels=256)
+    (2): SSDHead(in_channels=256, n_anchors=6, n_classes=81, n_coordinates=4, kernel_size=3)
+    (3): SSDHead(in_channels=128, n_anchors=6, n_classes=81, n_coordinates=4, kernel_size=3)
+    (4): SSDHead(in_channels=128, n_anchors=6, n_classes=81, n_coordinates=4, kernel_size=3)
+    (5): SSDHead(in_channels=64, n_anchors=4, n_classes=81, n_coordinates=4, kernel_size=1)
+  )
+)
+Params & Flops using ptflops:
+Computational complexity:       0.0 Mac 
+Number of parameters:           5.74 M  
++---------------------------------------------------------------+------------+
+|                            Modules                            | Parameters |
++---------------------------------------------------------------+------------+
+|                encoder.conv_1.block.conv.weight               |    432     |
+|                encoder.conv_1.block.norm.weight               |     16     |
+|                 encoder.conv_1.block.norm.bias                |     16     |
+|       encoder.layer_1.0.block.exp_1x1.block.conv.weight       |    1024    |
+|       encoder.layer_1.0.block.exp_1x1.block.norm.weight       |     64     |
+|        encoder.layer_1.0.block.exp_1x1.block.norm.bias        |     64     |
+|       encoder.layer_1.0.block.conv_3x3.block.conv.weight      |    576     |
+|       encoder.layer_1.0.block.conv_3x3.block.norm.weight      |     64     |
+|        encoder.layer_1.0.block.conv_3x3.block.norm.bias       |     64     |
+|       encoder.layer_1.0.block.red_1x1.block.conv.weight       |    2048    |
+|       encoder.layer_1.0.block.red_1x1.block.norm.weight       |     32     |
+|        encoder.layer_1.0.block.red_1x1.block.norm.bias        |     32     |
+|       encoder.layer_2.0.block.exp_1x1.block.conv.weight       |    4096    |
+|       encoder.layer_2.0.block.exp_1x1.block.norm.weight       |    128     |
+|        encoder.layer_2.0.block.exp_1x1.block.norm.bias        |    128     |
+|       encoder.layer_2.0.block.conv_3x3.block.conv.weight      |    1152    |
+|       encoder.layer_2.0.block.conv_3x3.block.norm.weight      |    128     |
+|        encoder.layer_2.0.block.conv_3x3.block.norm.bias       |    128     |
+|       encoder.layer_2.0.block.red_1x1.block.conv.weight       |    8192    |
+|       encoder.layer_2.0.block.red_1x1.block.norm.weight       |     64     |
+|        encoder.layer_2.0.block.red_1x1.block.norm.bias        |     64     |
+|       encoder.layer_2.1.block.exp_1x1.block.conv.weight       |   16384    |
+|       encoder.layer_2.1.block.exp_1x1.block.norm.weight       |    256     |
+|        encoder.layer_2.1.block.exp_1x1.block.norm.bias        |    256     |
+|       encoder.layer_2.1.block.conv_3x3.block.conv.weight      |    2304    |
+|       encoder.layer_2.1.block.conv_3x3.block.norm.weight      |    256     |
+|        encoder.layer_2.1.block.conv_3x3.block.norm.bias       |    256     |
+|       encoder.layer_2.1.block.red_1x1.block.conv.weight       |   16384    |
+|       encoder.layer_2.1.block.red_1x1.block.norm.weight       |     64     |
+|        encoder.layer_2.1.block.red_1x1.block.norm.bias        |     64     |
+|       encoder.layer_2.2.block.exp_1x1.block.conv.weight       |   16384    |
+|       encoder.layer_2.2.block.exp_1x1.block.norm.weight       |    256     |
+|        encoder.layer_2.2.block.exp_1x1.block.norm.bias        |    256     |
+|       encoder.layer_2.2.block.conv_3x3.block.conv.weight      |    2304    |
+|       encoder.layer_2.2.block.conv_3x3.block.norm.weight      |    256     |
+|        encoder.layer_2.2.block.conv_3x3.block.norm.bias       |    256     |
+|       encoder.layer_2.2.block.red_1x1.block.conv.weight       |   16384    |
+|       encoder.layer_2.2.block.red_1x1.block.norm.weight       |     64     |
+|        encoder.layer_2.2.block.red_1x1.block.norm.bias        |     64     |
+|       encoder.layer_3.0.block.exp_1x1.block.conv.weight       |   16384    |
+|       encoder.layer_3.0.block.exp_1x1.block.norm.weight       |    256     |
+|        encoder.layer_3.0.block.exp_1x1.block.norm.bias        |    256     |
+|       encoder.layer_3.0.block.conv_3x3.block.conv.weight      |    2304    |
+|       encoder.layer_3.0.block.conv_3x3.block.norm.weight      |    256     |
+|        encoder.layer_3.0.block.conv_3x3.block.norm.bias       |    256     |
+|       encoder.layer_3.0.block.red_1x1.block.conv.weight       |   24576    |
+|       encoder.layer_3.0.block.red_1x1.block.norm.weight       |     96     |
+|        encoder.layer_3.0.block.red_1x1.block.norm.bias        |     96     |
+|     encoder.layer_3.1.local_rep.conv_3x3.block.conv.weight    |   82944    |
+|     encoder.layer_3.1.local_rep.conv_3x3.block.norm.weight    |     96     |
+|      encoder.layer_3.1.local_rep.conv_3x3.block.norm.bias     |     96     |
+|     encoder.layer_3.1.local_rep.conv_1x1.block.conv.weight    |   13824    |
+|      encoder.layer_3.1.global_rep.0.pre_norm_mha.0.weight     |    144     |
+|       encoder.layer_3.1.global_rep.0.pre_norm_mha.0.bias      |    144     |
+| encoder.layer_3.1.global_rep.0.pre_norm_mha.1.qkv_proj.weight |   62208    |
+|  encoder.layer_3.1.global_rep.0.pre_norm_mha.1.qkv_proj.bias  |    432     |
+| encoder.layer_3.1.global_rep.0.pre_norm_mha.1.out_proj.weight |   20736    |
+|  encoder.layer_3.1.global_rep.0.pre_norm_mha.1.out_proj.bias  |    144     |
+|      encoder.layer_3.1.global_rep.0.pre_norm_ffn.0.weight     |    144     |
+|       encoder.layer_3.1.global_rep.0.pre_norm_ffn.0.bias      |    144     |
+|      encoder.layer_3.1.global_rep.0.pre_norm_ffn.1.weight     |   41472    |
+|       encoder.layer_3.1.global_rep.0.pre_norm_ffn.1.bias      |    288     |
+|      encoder.layer_3.1.global_rep.0.pre_norm_ffn.4.weight     |   41472    |
+|       encoder.layer_3.1.global_rep.0.pre_norm_ffn.4.bias      |    144     |
+|      encoder.layer_3.1.global_rep.1.pre_norm_mha.0.weight     |    144     |
+|       encoder.layer_3.1.global_rep.1.pre_norm_mha.0.bias      |    144     |
+| encoder.layer_3.1.global_rep.1.pre_norm_mha.1.qkv_proj.weight |   62208    |
+|  encoder.layer_3.1.global_rep.1.pre_norm_mha.1.qkv_proj.bias  |    432     |
+| encoder.layer_3.1.global_rep.1.pre_norm_mha.1.out_proj.weight |   20736    |
+|  encoder.layer_3.1.global_rep.1.pre_norm_mha.1.out_proj.bias  |    144     |
+|      encoder.layer_3.1.global_rep.1.pre_norm_ffn.0.weight     |    144     |
+|       encoder.layer_3.1.global_rep.1.pre_norm_ffn.0.bias      |    144     |
+|      encoder.layer_3.1.global_rep.1.pre_norm_ffn.1.weight     |   41472    |
+|       encoder.layer_3.1.global_rep.1.pre_norm_ffn.1.bias      |    288     |
+|      encoder.layer_3.1.global_rep.1.pre_norm_ffn.4.weight     |   41472    |
+|       encoder.layer_3.1.global_rep.1.pre_norm_ffn.4.bias      |    144     |
+|             encoder.layer_3.1.global_rep.2.weight             |    144     |
+|              encoder.layer_3.1.global_rep.2.bias              |    144     |
+|         encoder.layer_3.1.conv_proj.block.conv.weight         |   13824    |
+|         encoder.layer_3.1.conv_proj.block.norm.weight         |     96     |
+|          encoder.layer_3.1.conv_proj.block.norm.bias          |     96     |
+|           encoder.layer_3.1.fusion.block.conv.weight          |   165888   |
+|           encoder.layer_3.1.fusion.block.norm.weight          |     96     |
+|            encoder.layer_3.1.fusion.block.norm.bias           |     96     |
+|       encoder.layer_4.0.block.exp_1x1.block.conv.weight       |   36864    |
+|       encoder.layer_4.0.block.exp_1x1.block.norm.weight       |    384     |
+|        encoder.layer_4.0.block.exp_1x1.block.norm.bias        |    384     |
+|       encoder.layer_4.0.block.conv_3x3.block.conv.weight      |    3456    |
+|       encoder.layer_4.0.block.conv_3x3.block.norm.weight      |    384     |
+|        encoder.layer_4.0.block.conv_3x3.block.norm.bias       |    384     |
+|       encoder.layer_4.0.block.red_1x1.block.conv.weight       |   49152    |
+|       encoder.layer_4.0.block.red_1x1.block.norm.weight       |    128     |
+|        encoder.layer_4.0.block.red_1x1.block.norm.bias        |    128     |
+|     encoder.layer_4.1.local_rep.conv_3x3.block.conv.weight    |   147456   |
+|     encoder.layer_4.1.local_rep.conv_3x3.block.norm.weight    |    128     |
+|      encoder.layer_4.1.local_rep.conv_3x3.block.norm.bias     |    128     |
+|     encoder.layer_4.1.local_rep.conv_1x1.block.conv.weight    |   24576    |
+|      encoder.layer_4.1.global_rep.0.pre_norm_mha.0.weight     |    192     |
+|       encoder.layer_4.1.global_rep.0.pre_norm_mha.0.bias      |    192     |
+| encoder.layer_4.1.global_rep.0.pre_norm_mha.1.qkv_proj.weight |   110592   |
+|  encoder.layer_4.1.global_rep.0.pre_norm_mha.1.qkv_proj.bias  |    576     |
+| encoder.layer_4.1.global_rep.0.pre_norm_mha.1.out_proj.weight |   36864    |
+|  encoder.layer_4.1.global_rep.0.pre_norm_mha.1.out_proj.bias  |    192     |
+|      encoder.layer_4.1.global_rep.0.pre_norm_ffn.0.weight     |    192     |
+|       encoder.layer_4.1.global_rep.0.pre_norm_ffn.0.bias      |    192     |
+|      encoder.layer_4.1.global_rep.0.pre_norm_ffn.1.weight     |   73728    |
+|       encoder.layer_4.1.global_rep.0.pre_norm_ffn.1.bias      |    384     |
+|      encoder.layer_4.1.global_rep.0.pre_norm_ffn.4.weight     |   73728    |
+|       encoder.layer_4.1.global_rep.0.pre_norm_ffn.4.bias      |    192     |
+|      encoder.layer_4.1.global_rep.1.pre_norm_mha.0.weight     |    192     |
+|       encoder.layer_4.1.global_rep.1.pre_norm_mha.0.bias      |    192     |
+| encoder.layer_4.1.global_rep.1.pre_norm_mha.1.qkv_proj.weight |   110592   |
+|  encoder.layer_4.1.global_rep.1.pre_norm_mha.1.qkv_proj.bias  |    576     |
+| encoder.layer_4.1.global_rep.1.pre_norm_mha.1.out_proj.weight |   36864    |
+|  encoder.layer_4.1.global_rep.1.pre_norm_mha.1.out_proj.bias  |    192     |
+|      encoder.layer_4.1.global_rep.1.pre_norm_ffn.0.weight     |    192     |
+|       encoder.layer_4.1.global_rep.1.pre_norm_ffn.0.bias      |    192     |
+|      encoder.layer_4.1.global_rep.1.pre_norm_ffn.1.weight     |   73728    |
+|       encoder.layer_4.1.global_rep.1.pre_norm_ffn.1.bias      |    384     |
+|      encoder.layer_4.1.global_rep.1.pre_norm_ffn.4.weight     |   73728    |
+|       encoder.layer_4.1.global_rep.1.pre_norm_ffn.4.bias      |    192     |
+|      encoder.layer_4.1.global_rep.2.pre_norm_mha.0.weight     |    192     |
+|       encoder.layer_4.1.global_rep.2.pre_norm_mha.0.bias      |    192     |
+| encoder.layer_4.1.global_rep.2.pre_norm_mha.1.qkv_proj.weight |   110592   |
+|  encoder.layer_4.1.global_rep.2.pre_norm_mha.1.qkv_proj.bias  |    576     |
+| encoder.layer_4.1.global_rep.2.pre_norm_mha.1.out_proj.weight |   36864    |
+|  encoder.layer_4.1.global_rep.2.pre_norm_mha.1.out_proj.bias  |    192     |
+|      encoder.layer_4.1.global_rep.2.pre_norm_ffn.0.weight     |    192     |
+|       encoder.layer_4.1.global_rep.2.pre_norm_ffn.0.bias      |    192     |
+|      encoder.layer_4.1.global_rep.2.pre_norm_ffn.1.weight     |   73728    |
+|       encoder.layer_4.1.global_rep.2.pre_norm_ffn.1.bias      |    384     |
+|      encoder.layer_4.1.global_rep.2.pre_norm_ffn.4.weight     |   73728    |
+|       encoder.layer_4.1.global_rep.2.pre_norm_ffn.4.bias      |    192     |
+|      encoder.layer_4.1.global_rep.3.pre_norm_mha.0.weight     |    192     |
+|       encoder.layer_4.1.global_rep.3.pre_norm_mha.0.bias      |    192     |
+| encoder.layer_4.1.global_rep.3.pre_norm_mha.1.qkv_proj.weight |   110592   |
+|  encoder.layer_4.1.global_rep.3.pre_norm_mha.1.qkv_proj.bias  |    576     |
+| encoder.layer_4.1.global_rep.3.pre_norm_mha.1.out_proj.weight |   36864    |
+|  encoder.layer_4.1.global_rep.3.pre_norm_mha.1.out_proj.bias  |    192     |
+|      encoder.layer_4.1.global_rep.3.pre_norm_ffn.0.weight     |    192     |
+|       encoder.layer_4.1.global_rep.3.pre_norm_ffn.0.bias      |    192     |
+|      encoder.layer_4.1.global_rep.3.pre_norm_ffn.1.weight     |   73728    |
+|       encoder.layer_4.1.global_rep.3.pre_norm_ffn.1.bias      |    384     |
+|      encoder.layer_4.1.global_rep.3.pre_norm_ffn.4.weight     |   73728    |
+|       encoder.layer_4.1.global_rep.3.pre_norm_ffn.4.bias      |    192     |
+|             encoder.layer_4.1.global_rep.4.weight             |    192     |
+|              encoder.layer_4.1.global_rep.4.bias              |    192     |
+|         encoder.layer_4.1.conv_proj.block.conv.weight         |   24576    |
+|         encoder.layer_4.1.conv_proj.block.norm.weight         |    128     |
+|          encoder.layer_4.1.conv_proj.block.norm.bias          |    128     |
+|           encoder.layer_4.1.fusion.block.conv.weight          |   294912   |
+|           encoder.layer_4.1.fusion.block.norm.weight          |    128     |
+|            encoder.layer_4.1.fusion.block.norm.bias           |    128     |
+|       encoder.layer_5.0.block.exp_1x1.block.conv.weight       |   65536    |
+|       encoder.layer_5.0.block.exp_1x1.block.norm.weight       |    512     |
+|        encoder.layer_5.0.block.exp_1x1.block.norm.bias        |    512     |
+|       encoder.layer_5.0.block.conv_3x3.block.conv.weight      |    4608    |
+|       encoder.layer_5.0.block.conv_3x3.block.norm.weight      |    512     |
+|        encoder.layer_5.0.block.conv_3x3.block.norm.bias       |    512     |
+|       encoder.layer_5.0.block.red_1x1.block.conv.weight       |   81920    |
+|       encoder.layer_5.0.block.red_1x1.block.norm.weight       |    160     |
+|        encoder.layer_5.0.block.red_1x1.block.norm.bias        |    160     |
+|     encoder.layer_5.1.local_rep.conv_3x3.block.conv.weight    |   230400   |
+|     encoder.layer_5.1.local_rep.conv_3x3.block.norm.weight    |    160     |
+|      encoder.layer_5.1.local_rep.conv_3x3.block.norm.bias     |    160     |
+|     encoder.layer_5.1.local_rep.conv_1x1.block.conv.weight    |   38400    |
+|      encoder.layer_5.1.global_rep.0.pre_norm_mha.0.weight     |    240     |
+|       encoder.layer_5.1.global_rep.0.pre_norm_mha.0.bias      |    240     |
+| encoder.layer_5.1.global_rep.0.pre_norm_mha.1.qkv_proj.weight |   172800   |
+|  encoder.layer_5.1.global_rep.0.pre_norm_mha.1.qkv_proj.bias  |    720     |
+| encoder.layer_5.1.global_rep.0.pre_norm_mha.1.out_proj.weight |   57600    |
+|  encoder.layer_5.1.global_rep.0.pre_norm_mha.1.out_proj.bias  |    240     |
+|      encoder.layer_5.1.global_rep.0.pre_norm_ffn.0.weight     |    240     |
+|       encoder.layer_5.1.global_rep.0.pre_norm_ffn.0.bias      |    240     |
+|      encoder.layer_5.1.global_rep.0.pre_norm_ffn.1.weight     |   115200   |
+|       encoder.layer_5.1.global_rep.0.pre_norm_ffn.1.bias      |    480     |
+|      encoder.layer_5.1.global_rep.0.pre_norm_ffn.4.weight     |   115200   |
+|       encoder.layer_5.1.global_rep.0.pre_norm_ffn.4.bias      |    240     |
+|      encoder.layer_5.1.global_rep.1.pre_norm_mha.0.weight     |    240     |
+|       encoder.layer_5.1.global_rep.1.pre_norm_mha.0.bias      |    240     |
+| encoder.layer_5.1.global_rep.1.pre_norm_mha.1.qkv_proj.weight |   172800   |
+|  encoder.layer_5.1.global_rep.1.pre_norm_mha.1.qkv_proj.bias  |    720     |
+| encoder.layer_5.1.global_rep.1.pre_norm_mha.1.out_proj.weight |   57600    |
+|  encoder.layer_5.1.global_rep.1.pre_norm_mha.1.out_proj.bias  |    240     |
+|      encoder.layer_5.1.global_rep.1.pre_norm_ffn.0.weight     |    240     |
+|       encoder.layer_5.1.global_rep.1.pre_norm_ffn.0.bias      |    240     |
+|      encoder.layer_5.1.global_rep.1.pre_norm_ffn.1.weight     |   115200   |
+|       encoder.layer_5.1.global_rep.1.pre_norm_ffn.1.bias      |    480     |
+|      encoder.layer_5.1.global_rep.1.pre_norm_ffn.4.weight     |   115200   |
+|       encoder.layer_5.1.global_rep.1.pre_norm_ffn.4.bias      |    240     |
+|      encoder.layer_5.1.global_rep.2.pre_norm_mha.0.weight     |    240     |
+|       encoder.layer_5.1.global_rep.2.pre_norm_mha.0.bias      |    240     |
+| encoder.layer_5.1.global_rep.2.pre_norm_mha.1.qkv_proj.weight |   172800   |
+|  encoder.layer_5.1.global_rep.2.pre_norm_mha.1.qkv_proj.bias  |    720     |
+| encoder.layer_5.1.global_rep.2.pre_norm_mha.1.out_proj.weight |   57600    |
+|  encoder.layer_5.1.global_rep.2.pre_norm_mha.1.out_proj.bias  |    240     |
+|      encoder.layer_5.1.global_rep.2.pre_norm_ffn.0.weight     |    240     |
+|       encoder.layer_5.1.global_rep.2.pre_norm_ffn.0.bias      |    240     |
+|      encoder.layer_5.1.global_rep.2.pre_norm_ffn.1.weight     |   115200   |
+|       encoder.layer_5.1.global_rep.2.pre_norm_ffn.1.bias      |    480     |
+|      encoder.layer_5.1.global_rep.2.pre_norm_ffn.4.weight     |   115200   |
+|       encoder.layer_5.1.global_rep.2.pre_norm_ffn.4.bias      |    240     |
+|             encoder.layer_5.1.global_rep.3.weight             |    240     |
+|              encoder.layer_5.1.global_rep.3.bias              |    240     |
+|         encoder.layer_5.1.conv_proj.block.conv.weight         |   38400    |
+|         encoder.layer_5.1.conv_proj.block.norm.weight         |    160     |
+|          encoder.layer_5.1.conv_proj.block.norm.bias          |    160     |
+|           encoder.layer_5.1.fusion.block.conv.weight          |   460800   |
+|           encoder.layer_5.1.fusion.block.norm.weight          |    160     |
+|            encoder.layer_5.1.fusion.block.norm.bias           |    160     |
+|          extra_layers.os_64.dw_conv.block.conv.weight         |    1440    |
+|          extra_layers.os_64.dw_conv.block.norm.weight         |    160     |
+|           extra_layers.os_64.dw_conv.block.norm.bias          |    160     |
+|          extra_layers.os_64.pw_conv.block.conv.weight         |   40960    |
+|          extra_layers.os_64.pw_conv.block.norm.weight         |    256     |
+|           extra_layers.os_64.pw_conv.block.norm.bias          |    256     |
+|         extra_layers.os_128.dw_conv.block.conv.weight         |    2304    |
+|         extra_layers.os_128.dw_conv.block.norm.weight         |    256     |
+|          extra_layers.os_128.dw_conv.block.norm.bias          |    256     |
+|         extra_layers.os_128.pw_conv.block.conv.weight         |   32768    |
+|         extra_layers.os_128.pw_conv.block.norm.weight         |    128     |
+|          extra_layers.os_128.pw_conv.block.norm.bias          |    128     |
+|         extra_layers.os_256.dw_conv.block.conv.weight         |    1152    |
+|         extra_layers.os_256.dw_conv.block.norm.weight         |    128     |
+|          extra_layers.os_256.dw_conv.block.norm.bias          |    128     |
+|         extra_layers.os_256.pw_conv.block.conv.weight         |   16384    |
+|         extra_layers.os_256.pw_conv.block.norm.weight         |    128     |
+|          extra_layers.os_256.pw_conv.block.norm.bias          |    128     |
+|             extra_layers.os_-1.1.block.conv.weight            |    8192    |
+|            ssd_heads.0.proj_layer.block.conv.weight           |   65536    |
+|            ssd_heads.0.proj_layer.block.norm.weight           |    512     |
+|             ssd_heads.0.proj_layer.block.norm.bias            |    512     |
+|      ssd_heads.0.loc_cls_layer.dw_conv.block.conv.weight      |    4608    |
+|      ssd_heads.0.loc_cls_layer.dw_conv.block.norm.weight      |    512     |
+|       ssd_heads.0.loc_cls_layer.dw_conv.block.norm.bias       |    512     |
+|      ssd_heads.0.loc_cls_layer.pw_conv.block.conv.weight      |   261120   |
+|       ssd_heads.0.loc_cls_layer.pw_conv.block.conv.bias       |    510     |
+|            ssd_heads.1.proj_layer.block.conv.weight           |   40960    |
+|            ssd_heads.1.proj_layer.block.norm.weight           |    256     |
+|             ssd_heads.1.proj_layer.block.norm.bias            |    256     |
+|      ssd_heads.1.loc_cls_layer.dw_conv.block.conv.weight      |    2304    |
+|      ssd_heads.1.loc_cls_layer.dw_conv.block.norm.weight      |    256     |
+|       ssd_heads.1.loc_cls_layer.dw_conv.block.norm.bias       |    256     |
+|      ssd_heads.1.loc_cls_layer.pw_conv.block.conv.weight      |   130560   |
+|       ssd_heads.1.loc_cls_layer.pw_conv.block.conv.bias       |    510     |
+|      ssd_heads.2.loc_cls_layer.dw_conv.block.conv.weight      |    2304    |
+|      ssd_heads.2.loc_cls_layer.dw_conv.block.norm.weight      |    256     |
+|       ssd_heads.2.loc_cls_layer.dw_conv.block.norm.bias       |    256     |
+|      ssd_heads.2.loc_cls_layer.pw_conv.block.conv.weight      |   130560   |
+|       ssd_heads.2.loc_cls_layer.pw_conv.block.conv.bias       |    510     |
+|      ssd_heads.3.loc_cls_layer.dw_conv.block.conv.weight      |    1152    |
+|      ssd_heads.3.loc_cls_layer.dw_conv.block.norm.weight      |    128     |
+|       ssd_heads.3.loc_cls_layer.dw_conv.block.norm.bias       |    128     |
+|      ssd_heads.3.loc_cls_layer.pw_conv.block.conv.weight      |   65280    |
+|       ssd_heads.3.loc_cls_layer.pw_conv.block.conv.bias       |    510     |
+|      ssd_heads.4.loc_cls_layer.dw_conv.block.conv.weight      |    1152    |
+|      ssd_heads.4.loc_cls_layer.dw_conv.block.norm.weight      |    128     |
+|       ssd_heads.4.loc_cls_layer.dw_conv.block.norm.bias       |    128     |
+|      ssd_heads.4.loc_cls_layer.pw_conv.block.conv.weight      |   65280    |
+|       ssd_heads.4.loc_cls_layer.pw_conv.block.conv.bias       |    510     |
+|          ssd_heads.5.loc_cls_layer.block.conv.weight          |   21760    |
+|           ssd_heads.5.loc_cls_layer.block.conv.bias           |    340     |
+/nfs/users/ext_muhammad.haris/.conda/envs/mobilevit/lib/python3.8/site-packages/torch/utils/data/dataloader.py:487: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 6, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+Unsupported operator aten::silu encountered 33 time(s)
+Unsupported operator aten::add encountered 20 time(s)
+Unsupported operator aten::mul encountered 24 time(s)
+Unsupported operator aten::add_ encountered 36 time(s)
+Unsupported operator aten::softmax encountered 9 time(s)
+The following submodules of the model were never called during the trace of the graph. They may be unused, or they were accessed by direct calls to .forward() or via other python methods. In the latter case they will have zeros for statistics, though their statistics will still contribute to their parent calling module.
+anchor_box_generator
++---------------------------------------------------------------+------------+
+Total Trainable Params: 5.74 M
+Flops using fvcore: 2125.98 M
+    #Activations : 13.7115 [M]
+         #Conv2d : 54
+           FLOPs : 1.2119 [G]
+         #Params : 5.7388 [M]
+FPS @ BS=1: 124.82
+Total passes to network: 30
+Batch size: 256
+Total network time: 6.398684024810791 sec
+Throughput: 1200.2467960944668 FPS

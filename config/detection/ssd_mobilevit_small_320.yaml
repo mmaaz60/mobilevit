@@ -6,8 +6,8 @@ common:
   auto_resume: true
   mixed_precision: true
 dataset:
-  root_train: "/mnt/vision_datasets/coco"
-  root_val: "/mnt/vision_datasets/coco"
+  root_train: "/nfs/users/ext_muhammad.haris/maaz/MobileNeXt_EXP/coco/"
+  root_val: "/nfs/users/ext_muhammad.haris/maaz/MobileNeXt_EXP/coco/"
   name: "coco_ssd"
   category: "detection"
   train_batch_size0: 32
